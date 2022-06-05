@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Http\Requests\StorePostRequest;
-use App\Models\Category;
+use App\Models\Tag;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class TagController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +17,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::get();
-        return view('admin.category.index', compact('categories'));
+        $tags = Tag::get();
+        return view('admin.tag.index', compact('tags'));
+
     }
 
     /**
@@ -27,7 +29,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.category.create');
+        return view('admin.tag.create');
     }
 
     /**
@@ -38,10 +40,10 @@ class CategoryController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        $category=new Category($request->all());
-        $category->active=$request->has('active') ? 1 : 0;
-        $category->save();
-        return redirect()->route('category.index')->with('success', 'Новая рубрика создана');
+        $tag = new Tag($request->all());
+        $tag->active=$request->has('active') ? 1 : 0;
+        $tag->save();
+        return redirect()->route('tag.index')->with('success', 'Новый таг создан');
     }
 
     /**
@@ -63,8 +65,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::find($id);
-        return view('admin.category.update', compact('category'));
+        $tag = Tag::find($id);
+        return view('admin.tag.update', compact('tag'));
     }
 
     /**
@@ -76,11 +78,11 @@ class CategoryController extends Controller
      */
     public function update(StorePostRequest $request, $id)
     {
-        $category = Category::find($id);
+        $tag = Tag::find($id);
         $data = $request->all();
         $data['active']=$request->has('active') ? 1 : 0;
-        $category->update($data);
-        return redirect()->route('category.index')->with('success', 'Данные обновлены');
+        $tag->update($data);
+        return redirect()->route('tag.index')->with('success', 'Данные обновлены');
     }
 
     /**
@@ -91,8 +93,8 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::find($id);
-        $category->delete();
-        return redirect()->route('category.index')->with('success', 'Рубрика удалена');
+        $tag = Tag::find($id);
+        $tag->delete();
+        return redirect()->route('tag.index')->with('success', 'Тег удалён');
     }
 }

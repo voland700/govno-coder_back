@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Список рубрик, категорий статей')
+@section('title', 'Список тегов для статей')
 
 @section('content_header')
-    <h1>Рубрики статей</h1>
+    <h1>Список тегов</h1>
 @stop
 
 @section('content')
@@ -14,8 +14,8 @@
         </div>
     @endif
 
-    <a href="{{route('category.create')}}" type="button" class="btn btn-primary mb-3">Добавить</a>
-    <x-adminlte-card title="Категории статей" class="col-lg-6" collapsible removable maximizable>
+    <a href="{{route('tag.create')}}" type="button" class="btn btn-primary mb-3">Добавить</a>
+    <x-adminlte-card title="Теги для статей" class="col-lg-6" collapsible removable maximizable>
         @php
             $heads = [
                 ['label' => 'ID', 'width' => 2],
@@ -28,13 +28,13 @@
             ];
         @endphp
         <x-adminlte-datatable id="table1" :heads="$heads">
-        @foreach($categories as $category)
+        @foreach($tags as $tag)
             <tr>
-                <td>{{$category->id}}</td>
-                <td>{{$category->name}}</td>
+                <td>{{$tag->id}}</td>
+                <td>{{$tag->name}}</td>
                 <td>
-                    <a href="{{ route('category.edit', $category->id) }}" class="btn btn-xs btn-info mx-1 shadow"><i class="fa fa-lg fa-fw fa-pen"></i></a>
-                    <form method="POST" action="{{ route('category.destroy', $category->id) }}" class="formDelete">
+                    <a href="{{ route('tag.edit', $tag->id) }}" class="btn btn-xs btn-info mx-1 shadow"><i class="fa fa-lg fa-fw fa-pen"></i></a>
+                    <form method="POST" action="{{ route('tag.destroy', $tag->id) }}" class="formDelete">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-xs btn-danger mx-1 shadow delete" onclick="return confirm('Подтвердите удаление')"><i class="fa fa-lg fa-fw fa-trash"></i></button>
@@ -43,11 +43,7 @@
             </tr>
         @endforeach
         </x-adminlte-datatable>
-
-
-
     </x-adminlte-card>
-
 @stop
 
 @section('css')

@@ -242,7 +242,7 @@ return [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
         ],
-        // -- Удалить данные пункты меню
+
         [
             'text' => 'blog',
             'url'  => 'admin/blog',
@@ -252,12 +252,14 @@ return [
             'text'        => 'Рубрики',
             'route'       => 'category.index',
             'icon'        => 'fas fa-fw fa-list-ul'
-
+        ],
+        [
+            'text'        => 'Tеги',
+            'route'       => 'tag.index',
+            'icon'        => 'fas fa-fw fa-tags'
         ],
 
-
-
-
+        // -- Удалить данные пункты меню
 
         [
             'text'        => 'pages',
