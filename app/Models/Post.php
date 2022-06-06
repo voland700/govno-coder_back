@@ -5,17 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
 
-class Post extends Model
+class Post extends Model implements HasMedia
 {
-    use HasSlug;
+    use HasSlug, HasMediaTrait;
     protected $table = 'posts';
     protected $fillable = [
         'name',
         'slug',
         'active',
-        'img',
-        'thumbnail',
         'summary',
         'description',
         'title',

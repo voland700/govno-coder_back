@@ -20,7 +20,7 @@
             $heads = [
                 ['label' => 'ID', 'width' => 2],
                 'Name',
-                ['label' => 'Actions', 'no-export' => true, 'width' => 10],
+                ['label' => 'Actions', 'no-export' => true, 'width' => 14],
             ];
             $config = [
                 'order' => [[1, 'asc']],
