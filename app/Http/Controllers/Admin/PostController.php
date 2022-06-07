@@ -5,9 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use App\Models\Category;
+use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManagerStatic as Image;
+
 
 class PostController extends Controller
 {
@@ -31,7 +36,6 @@ class PostController extends Controller
         $categoriesArr = Category::select('id', 'name')->get()->toArray();
         $categories = [];
         foreach ($categoriesArr as $item) $categories[$item['id']] = $item['name'];
-
         $tags = Tag::select('id', 'name')->get();
         return view('admin.post.create', compact('categories', 'tags'));
         //dd($categories);
@@ -45,7 +49,20 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        dd($request->all());
+        $post = new Post($request->all());
+        $post->active = $request->has('active') ? 1 : 0;
+        if($request->img || !$request->preview){
+            $pathSmall = str_replace('big_', 'small_', $request->img);
+            if (Storage::disk('public')->exists(str_replace('storage', '', $request->img))){
+                Storage::disk('public')->copy(str_replace('storage', '', $request->img), str_replace('storage', '', $pathSmall));
+                Image::make(storage_path(str_replace('storage', 'app/public', $pathSmall)))->resize(300, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save();
+                $post->preview = $pathSmall;
+            }
+        }
+        $post->save();
+        return redirect()->route('post.index')->with('success', 'Новая статья добавлена');
     }
 
     /**

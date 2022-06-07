@@ -41,4 +41,8 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('/tag', \App\Http\Controllers\Admin\TagController::class);
     Route::resource('/post', \App\Http\Controllers\Admin\PostController::class);
 
+    Route::post('/upload-file',[\App\Http\Controllers\Admin\DropzoneController::class, 'upload_file'])->name('dropzone.upload');
+    Route::post('/remove-tmp-file',[\App\Http\Controllers\Admin\DropzoneController::class, 'remove_tmp_file'])->name('dropzone.tnp.remove');
+
+
 });

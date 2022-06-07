@@ -20,7 +20,7 @@
 
 
 
-    <form role="form" method="post" action="{{ route('post.store') }}">
+    <form role="form" method="post" id="form" action="{{ route('post.store') }}">
         @csrf
 
         <x-adminlte-card title="Новая статья" class="col-lg-9" body-class="pb-3" collapsible removable maximizable>
@@ -64,7 +64,21 @@
 
                 <h4 class="col-lg-9 mt-3 mb-2">Контент статьи</h4>
                 <x-adminlte-input name="title" label="Заголовок для статьи" fgroup-class="col-12" enable-old-support/>
-                <x-adminlte-input name="subtitle" label="Подзаголовок для статьи" fgroup-class="col-12" enable-old-support/>
+
+                <div class="col-12 mt-3 mb-3">
+                    <input type="hidden" name="img" id="img" value="">
+                    <input type="hidden" name="preview" id="preview" value="">
+                    <div class="row">
+                    <div class="form-group col-lg-3">
+                        <label for="imageDropzone">Основное изображение</label>
+                        <div class="dropzone" id="imageDropzone"></div>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="thumbnailDropzone">Изображение анонса</label>
+                        <div class="dropzone" id="thumbnailDropzone"></div>
+                    </div>
+                    </div>
+                </div>
 
 
                 <x-adminlte-input name="author" label="Автор статьи" fgroup-class="col-6" placeholder="Astrid Lindgren" enable-old-support/>
@@ -92,14 +106,6 @@
                 @endphp
                 <x-adminlte-text-editor name="description" label="Описание" igroup-size="sm" fgroup-class="col-12" placeholder="Write some text..." :config="$config"/>
 
-
-
-
-
-
-
-
-
             </div>
 
             <x-slot name="footerSlot">
@@ -113,16 +119,89 @@
 
 @section('css')
 
-
-    <link rel="stylesheet" href="/assets/admin/css/select2.min.css">
-    <link rel="stylesheet" href="/assets/admin/css/select2-bootstrap4.min.css">
-
+    <link rel="stylesheet" href="/assets/admin/plugins/dropzone/dropzone.min.css">
     <link rel="stylesheet" href="/assets/admin/css/admin_custom.css">
 @stop
 
 
 @section('js')
-    <script src="/assets/admin/js/select2.full.min.js"></script>
-    <script src="/assets/admin/js/ru.js"></script>
+    <script src="/assets/admin/plugins/dropzone/dropzone.min.js"></script>
+    <script>
+        const form = document.getElementById('form');
+        const img = document.getElementById('img');
+        const preview = document.getElementById('preview');
 
+        Dropzone.autoDiscover = false;
+        let myDropzone = new Dropzone("#imageDropzone", {
+            url: '{{route('dropzone.upload')}}',
+            headers: {'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content},
+            method: 'POST',
+            maxFilesize: 2,
+            acceptedFiles: ".jpeg,.jpg,.png,.gif",
+            addRemoveLinks: true,
+            timeout: 60000,
+            params: {
+                type: 'img'
+            },
+            removedfile: function(file){
+                file.previewElement.remove();
+                if(!img.value == null || !img.value == ''){
+                    RemoveTmpFile(img.value);
+                }
+                img.value=null;
+            },
+            success: function (file, response) {
+                img.value = response.path;
+                //console.log(response.success);
+            },
+            error: function (file, response) {
+                console.log(response);
+                //return false;
+            }
+        });
+
+        let thumbnailDropzone = new Dropzone("#thumbnailDropzone", {
+            url: '{{route('dropzone.upload')}}',
+            headers: {'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content},
+            method: 'POST',
+            maxFilesize: 2,
+            acceptedFiles: ".jpeg,.jpg,.png,.gif",
+            addRemoveLinks: true,
+            timeout: 60000,
+            params: {
+                type: 'preview'
+            },
+            removedfile: function(file){
+                file.previewElement.remove();
+                if(!preview.value == null || !preview.value == ''){
+                    RemoveTmpFile(preview.value);
+                }
+                preview.value=null;
+            },
+            success: function (file, response) {
+                preview.value = response.path;
+            },
+            error: function (file, response) {
+                console.log(response);
+            }
+        });
+
+        function RemoveTmpFile(name){
+            $.ajax(
+                {
+                    url: '{{route('dropzone.tnp.remove')}}',
+                    type: 'POST',
+                    data: {
+                        _token: document.querySelector('meta[name=csrf-token]').content,
+                        path: name,
+                    },
+                    success: function (response) {
+                        console.log(response);
+                    },
+                    error: function (response) {
+                        console.log(response);
+                    }
+                });
+        }
+    </script>
 @stop

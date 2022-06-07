@@ -27,6 +27,15 @@
         <x-adminlte-card title="Данные рубрики" class="col-lg-6" body-class="pb-3" collapsible removable maximizable>
 
             <x-adminlte-input-switch name="active" data-on-color="success" data-off-color="danger" {{($category->active == 1) ? 'checked' : ''}}/>
+
+            <div class="form-group row">
+                <div class="col-sm-2">
+                    <input type="number" class="form-control @error('sort') is-invalid @enderror" id="sort"  name="sort" value="{{$category->sort}}">
+                </div>
+                <label for="sort" class="col-sm-4 col-form-label">Индекс сортировки</label>
+            </div>
+
+
             <div class="row">
 
                 <x-adminlte-input name="name" label="Название рубрики" value="{{$category->name}}" fgroup-class="col-12" enable-old-support>

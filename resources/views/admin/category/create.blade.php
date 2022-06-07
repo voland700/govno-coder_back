@@ -26,6 +26,13 @@
         <x-adminlte-card title="Новая рубрика" class="col-lg-6" body-class="pb-3" collapsible removable maximizable>
 
             <x-adminlte-input-switch name="active" data-on-color="success" data-off-color="danger" checked/>
+            <div class="form-group row">
+                <div class="col-sm-2">
+                    <input type="number" class="form-control @error('sort') is-invalid @enderror" id="sort"  name="sort" placeholder="50">
+                </div>
+                <label for="sort" class="col-sm-4 col-form-label">Индекс сортировки</label>
+           </div>
+
             <div class="row">
 
                 <x-adminlte-input name="name" label="Название рубрики" placeholder="Название рубрики" fgroup-class="col-12" enable-old-support>

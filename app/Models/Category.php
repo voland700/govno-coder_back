@@ -14,6 +14,7 @@ class Category extends Model
         'name',
         'slug',
         'active',
+        'sort',
         'title',
         'subtitle',
         'meta_title',

@@ -24,14 +24,16 @@ class StorePostRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Поле "Навание" обязательно для заполнения'
+            'name.required' => 'Поле "Навание" обязательно для заполнения',
+            'sort.integer' => 'Номер сортровки должен быть целым числом'
         ];
     }
 
     public function rules()
     {
         return [
-            'name' => 'required'
+            'name' => 'required',
+            'sort' => 'integer|nullable'
         ];
     }
 }

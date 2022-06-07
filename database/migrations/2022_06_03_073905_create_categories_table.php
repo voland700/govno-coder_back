@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
+            $table->integer('sort')->unsigned()->default(50);
             $table->integer('active')->unsigned()->default(1);
             $table->string('title')->nullable();
             $table->string('subtitle')->nullable();

@@ -20,7 +20,8 @@
             $heads = [
                 ['label' => 'ID', 'width' => 2],
                 'Name',
-                ['label' => 'Actions', 'no-export' => true, 'width' => 10],
+                ['label' => 'Сортировка', 'width' => 14],
+                ['label' => 'Actions', 'no-export' => true, 'width' => 14],
             ];
             $config = [
                 'order' => [[1, 'asc']],
@@ -32,6 +33,7 @@
             <tr>
                 <td>{{$category->id}}</td>
                 <td>{{$category->name}}</td>
+                <td class="text-center">{{$category->sort}}</td>
                 <td>
                     <a href="{{ route('category.edit', $category->id) }}" class="btn btn-xs btn-info mx-1 shadow"><i class="fa fa-lg fa-fw fa-pen"></i></a>
                     <form method="POST" action="{{ route('category.destroy', $category->id) }}" class="formDelete">
