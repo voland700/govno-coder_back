@@ -19,8 +19,6 @@ return new class extends Migration
             $table->string('slug');
             $table->integer('active')->unsigned()->default(1);
             $table->string('title')->nullable();
-            $table->string('img')->nullable();
-            $table->string('preview')->nullable();
             $table->string('meta_title')->nullable();
             $table->string('meta_keywords')->nullable();
             $table->text('meta_description')->nullable();

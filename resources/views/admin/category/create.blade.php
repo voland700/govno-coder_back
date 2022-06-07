@@ -28,7 +28,7 @@
             <x-adminlte-input-switch name="active" data-on-color="success" data-off-color="danger" checked/>
             <div class="form-group row">
                 <div class="col-sm-2">
-                    <input type="number" class="form-control @error('sort') is-invalid @enderror" id="sort"  name="sort" placeholder="50">
+                    <input type="number" class="form-control @error('sort') is-invalid @enderror" id="sort"  name="sort" value="50">
                 </div>
                 <label for="sort" class="col-sm-4 col-form-label">Индекс сортировки</label>
            </div>
@@ -46,7 +46,7 @@
                 <x-adminlte-input name="subtitle" label="Подзаголовок рубрики" fgroup-class="col-12" enable-old-support/>
 
                 <h4 class="col-lg-9 mt-3 mb-2">СЕО данные рубрики</h4>
-                <x-adminlte-input name="meta_title" label="META - title" placeholder="slug"  fgroup-class="col-12" enable-old-support/>
+                <x-adminlte-input name="meta_title" label="META - title" fgroup-class="col-12" enable-old-support/>
                 <x-adminlte-input name="meta_keywords" label="META - keywords" fgroup-class="col-12" enable-old-support/>
                 <x-adminlte-textarea name="meta_description" label="META - description" fgroup-class="col-12" placeholder="Insert description..." enable-old-support/>
             </div>
@@ -56,20 +56,10 @@
             </x-slot>
         </x-adminlte-card>
     </form>
-
-
-
-
-
-
-
-
-
-
 @stop
 
 @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
+    <link rel="stylesheet" href="/assets/admin/css/admin_custom.css">
 @stop
 
 @section('js')
