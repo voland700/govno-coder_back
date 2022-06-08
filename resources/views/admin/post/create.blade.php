@@ -60,6 +60,7 @@
                 <x-adminlte-textarea name="meta_description" label="META - description" fgroup-class="col-12" placeholder="Insert description..." enable-old-support/>
                 <h4 class="col-lg-9 mt-3 mb-2">Контент статьи</h4>
                 <x-adminlte-input name="title" label="Заголовок для статьи" fgroup-class="col-12" enable-old-support/>
+
                 <x-adminlte-input-file name="image" label="Изображение" fgroup-class="col-3 mt-3 mb-3" placeholder="Choose a file..." disable-feedback/>
                <div class="col-12"></div>
                 <x-adminlte-input name="author" label="Автор статьи" fgroup-class="col-6" placeholder="Astrid Lindgren" enable-old-support/>

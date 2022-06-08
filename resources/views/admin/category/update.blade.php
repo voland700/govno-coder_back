@@ -20,13 +20,11 @@
 
 
 
-    <form role="form" method="post" action="{{  route('category.update', $category->id) }}">
-            @csrf
-            @method('PUT')
+    <form role="form" method="post"
 
         <x-adminlte-card title="Данные рубрики" class="col-lg-6" body-class="pb-3" collapsible removable maximizable>
 
-            <x-adminlte-input-switch name="active" data-on-color="success" data-off-color="danger" {{($category->active == 1) ? 'checked' : ''}}/>
+            <x-adminlte-input-switch name="active" data-on-color="success" data-off-color="danger" {{($category->active == 1) ? 'checked' : 'disabled'}}/>
 
             <div class="form-group row">
                 <div class="col-sm-2">

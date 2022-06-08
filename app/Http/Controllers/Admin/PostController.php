@@ -21,7 +21,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::with(['categories' => function($q) {
+            $q->select( 'name');
+         }])->select('id', 'name', 'active')->get();
+        //dd($posts);
+        return view('admin.post.index', compact('posts'));
     }
 
     /**
@@ -81,7 +85,38 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+
+        $post = Post::with('categories', 'tags')->find($id);
+
+
+        $categoriesArr = Category::select('id', 'name')->get()->toArray();
+        $categories = [];
+        foreach ($categoriesArr as $item) $categories[$item['id']] = $item['name'];
+        $selectedCategories = $post->categories->pluck('id')->toArray();
+        $tags = Tag::select('id', 'name')->get();
+        $selectedTags = $post->tags->pluck('id')->toArray();
+        $img = [];
+        $media = $post->getMedia('main');
+        if($media->isNotEmpty()){
+            $img['url'] = $media[0]->getURL();
+            $img['name'] = $media[0]->file_name;
+        } else {
+            $img['url'] = null;
+            $img['name'] = null;
+        }
+
+
+        //dd($media->isNotEmpty());
+        //$img['url'] = $post->getFirstMediaUrl('main');
+        /*
+        $post = Post::find($id);
+        $media = $post->getMedia('main');
+        $path = $media[0]->getPath();
+        $name = $media[0]->name;
+        //$img = $post->getFirstMediaUrl('main');
+        dd($name);
+        */
+        return view('admin.post.update', compact('post', 'categories', 'selectedCategories', 'tags', 'selectedTags', 'img'));
     }
 
     /**
@@ -106,4 +141,27 @@ class PostController extends Controller
     {
         //
     }
+
+
+    public function removeImg(Request $request)
+    {
+        $post = Post::find($request->id);
+        $media = $post->getMedia('main');
+        $media[0]->delete();
+        return 'success';
+    }
+
+    public function updateImg(Request $request)
+    {
+
+
+        return $request->id;
+
+
+
+    }
+
+
+
+
 }
