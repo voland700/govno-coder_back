@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
@@ -49,7 +50,7 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
         $data = $request->all();
         $data['active'] = $request->has('active') ? 1 : 0;
@@ -85,10 +86,7 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-
         $post = Post::with('categories', 'tags')->find($id);
-
-
         $categoriesArr = Category::select('id', 'name')->get()->toArray();
         $categories = [];
         foreach ($categoriesArr as $item) $categories[$item['id']] = $item['name'];
@@ -104,18 +102,6 @@ class PostController extends Controller
             $img['url'] = null;
             $img['name'] = null;
         }
-
-
-        //dd($media->isNotEmpty());
-        //$img['url'] = $post->getFirstMediaUrl('main');
-        /*
-        $post = Post::find($id);
-        $media = $post->getMedia('main');
-        $path = $media[0]->getPath();
-        $name = $media[0]->name;
-        //$img = $post->getFirstMediaUrl('main');
-        dd($name);
-        */
         return view('admin.post.update', compact('post', 'categories', 'selectedCategories', 'tags', 'selectedTags', 'img'));
     }
 
@@ -128,7 +114,17 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $post = Post::find($id);
+        $data = $request->all();
+        $data['active'] = $request->has('active') ? 1 : 0;
+        $post->update($data);
+        if($request->categories){
+            $post->categories()->sync($request->categories);
+        }
+        if($request->tags){
+            $post->tags()->sync($request->tags);
+        }
+        return redirect()->route('post.index')->with('success', 'Данные обновлены');
     }
 
     /**
@@ -139,7 +135,11 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Post::with('categories', 'tags')->find($id);
+        $post->categories()->sync([]);
+        $post->tags()->sync([]);
+        $post->delete();
+        return back()->with('success', 'Статья удалёна');
     }
 
 
@@ -153,15 +153,43 @@ class PostController extends Controller
 
     public function updateImg(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'file' => 'image|mimes:jpeg,jpg,bmp,png|nullable',
+            'file.size' => '5120|nullable'
+            ], $messages = [
+            'file.image' => 'Загружаемый Файл должен быть изображением',
+            'file.mimes' => 'Фал с изображением должен иметь расширение: jpeg,jpg,bmp,png',
+            'file.size' => 'Размер изображения не должен превышать 5 мб.'
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'template' => null,
+                'fileName' => null,
+                'error' => true,
+                'errorMessage' => $errors->first('file'),
+            ]);
+        }
+        $post = Post::find($request->id);
 
+        if($mediaOld = $post->getMedia('main')) $mediaOld[0]->delete();
 
-        return $request->id;
-
-
-
+        if ($request->file) {
+            $post->addMediaFromRequest('file')->toMediaCollection('main');
+        }
+        $post = Post::find($request->id);
+        $media = $post->getMedia('main');
+        if($media->isNotEmpty()){
+            $template = ' <div class="post_img_wrap mb-3"><img src="'.$media[0]->getURL().'" alt="Изображение" id="imgPost" class="post_img"></div>
+                          <div class="post_btn_img_delete" id="imgDelete" onclick="imageRemove()"><i class="fas fa-times"></i></div>';
+            return response()->json([
+                'template' => $template,
+                'fileName' => $media[0]->file_name,
+                'error' => false,
+                'errorMessage' => null,
+            ]);
+        } else {
+            return false;
+        }
     }
-
-
-
-
 }

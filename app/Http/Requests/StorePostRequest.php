@@ -25,7 +25,10 @@ class StorePostRequest extends FormRequest
     {
         return [
             'name.required' => 'Поле "Навание" обязательно для заполнения',
-            'sort.integer' => 'Номер сортровки должен быть целым числом'
+            'sort.integer' => 'Номер сортровки должен быть целым числом',
+            'img.image' => 'Основное изображение - должно быть файлом c изображением',
+            'img.mimes' => 'Фал с изображением должен иметь расширение: jpeg,jpg,bmp,png',
+            'img.size' => 'Размер изображения логотипа не должен превышать 2 мб.'
         ];
     }
 
@@ -33,7 +36,9 @@ class StorePostRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'sort' => 'integer|nullable'
+            'sort' => 'integer|nullable',
+            'img' => 'image|mimes:jpeg,jpg,bmp,png|nullable',
+            'img.size' => '2048|nullable'
         ];
     }
 }

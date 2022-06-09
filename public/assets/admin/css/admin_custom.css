@@ -69,5 +69,19 @@
 }
 .post_btn_img_delete:hover{
     color: #ab154c;
+}
 
+.post_img_error_message{
+    display: none;
+    font-size: 14px;
+    font-style: italic;
+    color: #921925;
+    padding: 5px 10px;
+    border-radius: 3px;
+    background-color: rgba(217, 39, 39, .10);
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+.post_img_error_message.active{
+    display: block;
 }

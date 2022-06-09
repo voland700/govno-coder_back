@@ -76,7 +76,7 @@
                         <div class="post_img_wrap mb-3">
                             <img src="{{$img['url']}}" alt="Изображение" id="imgPost" class="post_img">
                         </div>
-                        <div class="post_btn_img_delete" id="imgDelete"><i class="fas fa-times"></i></div>
+                        <div class="post_btn_img_delete" id="imgDelete" onclick="imageRemove()"><i class="fas fa-times"></i></div>
                         @else
                             <div class="post_img_wrap mb-3">
                                 <img src="{{asset('/assets/admin/img/no-photo.jpg')}}" alt="Нет фото" class="post_img">
@@ -87,9 +87,10 @@
                     <div class="input-group">
                         <div class="custom-file">
                             <input type="file" id="image" name="file" class="custom-file-input">
-                            <label class="custom-file-label text-truncate" for="image"> Choose a file...</label>
+                            <label class="custom-file-label text-truncate" for="image" id="imgNameFile"> @if($img['name']) {{$img['name']}} @else Choose a file... @endif</label>
                         </div>
                     </div>
+                    <span class="post_img_error_message" id="errorMessage"></span>
                 </div>
 
 
@@ -131,8 +132,9 @@
 @stop
 @section('js')
     <script>
-        const imgDelete = document.getElementById('imgDelete');
         const imgWrap = document.getElementById('imgWrap');
+        const imgNameFile = document.getElementById('imgNameFile');
+        const errorMessage = document.getElementById('errorMessage');
 
         async function getImage(url = '', data = {}) {
             // Default options are marked with *
@@ -149,53 +151,63 @@
             return await response.text(); // parses JSON response into native JavaScript objects
         }
 
-        if(imgDelete){
-            imgDelete.addEventListener('click', function (event){
-                event.preventDefault();
-                getImage('{{route('remove.img')}}', {
-                    _token: document.querySelector('meta[name=csrf-token]').content,
-                    id: {{$post->id}}
-                }) .then((data) => {
-                    //document.getElementById('imagesWrap').innerHTML = data;
-                    document.getElementById('imgPost').src = '/assets/admin/img/no-photo.jpg';
-                    imgDelete.remove();
-                    console.log(data);
-                });
+        function imageRemove(){
+            getImage('{{route('remove.img')}}', {
+                _token: document.querySelector('meta[name=csrf-token]').content,
+                id: {{$post->id}}
+            }) .then((data) => {
+                document.getElementById('imgPost').src = '/assets/admin/img/no-photo.jpg';
+                document.getElementById('imgDelete').remove();
+                imgNameFile.innerText = 'Choose a file...';
+                errorMessage.innerText = '';
+                if(errorMessage.classList.contains('active')) errorMessage.classList.remove('active');
             });
         }
 
         const inputElement = document.getElementById("image");
         inputElement.addEventListener("change", handleFiles, false);
 
-
-
         function handleFiles() {
             let file = this.files[0]; /* now you can work with the file list */
-
             let formData = new FormData();
             formData.append("file", file, file.name);
             formData.append("_token", document.querySelector('meta[name=csrf-token]').content );
             formData.append("id", {{$post->id}} );
 
-            getImage('{{route('update.img')}}',  formData
-            ) .then((data) => {
-                //document.getElementById('imagesWrap').innerHTML = data;
-                console.log(data);
-            });
+            async function uploadFile(url = '', data = {}) {
+                // Default options are marked with *
+                const response = await fetch(url, {
+                    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                    mode: 'cors', // no-cors, *cors, same-origin
+                    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                    credentials: 'same-origin', // include, *same-origin, omit
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content
+                        //'Content-Type': 'multipart/form-data',
+                        //'Content-Type': 'application/json'
+                        // 'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    redirect: 'follow', // manual, *follow, error
+                    referrerPolicy: 'no-referrer', // no-referrer, *client
+                    body: data // body data type must match "Content-Type" header
+                });
+                return await response.json(); // parses JSON response into native JavaScript objects
+            }
 
-
-
-
-
-
-
-
+            uploadFile('{{route('update.img')}}', formData)
+                .then((data) => {
+                    if(!data.error){
+                        imgWrap.innerHTML = data.template;
+                        imgNameFile.innerText = data.fileName;
+                        errorMessage.innerText = '';
+                        if(errorMessage.classList.contains('active')) errorMessage.classList.remove('active');
+                    } else {
+                        errorMessage.innerText = data.errorMessage;
+                        if(!errorMessage.classList.contains('active')) errorMessage.classList.add('active');
+                    }
+                    //console.log(data);
+                });
         }
-
-
-
-
-
     </script>
 
 @stop
