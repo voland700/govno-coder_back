@@ -15,3 +15,15 @@ mix.js('resources/js/app.js', 'public/js').postCss('resources/css/app.css', 'pub
     require('tailwindcss'),
     require('autoprefixer'),
 ]);
+
+mix.styles([
+    'resources/assets/front/css/app.min.css',
+], 'public/css/main.css');
+
+mix.scripts([
+    'resources/assets/front/js/fancybox.esm.js',
+    'resources/assets/front/js/prism.js'
+], 'public/js/main.js').sourceMaps();
+
+mix.copyDirectory('resources/assets/front/fonts', 'public/fonts');
+mix.copyDirectory('resources/assets/front/images', 'public/images');

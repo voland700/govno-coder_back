@@ -195,7 +195,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        'Intervention\Image\ImageServiceProvider',
+        //'Intervention\Image\ImageServiceProvider',
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
     ],
 
@@ -211,7 +212,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'Image' => 'Intervention\Image\Facades\Image',
+        //'Image' => 'Intervention\Image\Facades\Image',
     ])->toArray(),
 
 ];

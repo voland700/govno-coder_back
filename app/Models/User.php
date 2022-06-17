@@ -2,15 +2,23 @@
 
 namespace App\Models;
 
+use Cog\Contracts\Love\Reacterable\Models\Reacterable as ReacterableInterface;
+use Cog\Laravel\Love\Reacterable\Models\Traits\Reacterable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+
+
+
+
+
+
+class User extends Authenticatable implements ReacterableInterface
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, Reacterable;
 
     /**
      * The attributes that are mass assignable.
@@ -45,6 +53,10 @@ class User extends Authenticatable
     public function isAdmin()
     {
         return $this->is_admin === 1;
+    }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 
 
