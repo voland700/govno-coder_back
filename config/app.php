@@ -197,6 +197,7 @@ return [
 
         //'Intervention\Image\ImageServiceProvider',
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+		App\Providers\ComposerServiceProvider::class,
 
     ],
 

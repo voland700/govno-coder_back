@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\MediaLibrary\HasMedia;
@@ -58,6 +59,16 @@ class Post extends Model implements HasMedia
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    //Accessors
+    public function getShortAttribute()
+    {
+        if(!$this->summary==NULL){
+            return Str::of(strip_tags($this->summary))->limit(160);
+        }else{
+            return Str::of(strip_tags($this->description))->limit(160);
+        }
     }
 
 

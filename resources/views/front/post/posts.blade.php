@@ -1,0 +1,46 @@
+@extends('front.layouts.layout')
+@section('meta-title', 'Везувий Легенда - отопительные и банные печи Везувий, грили, мангалы и барбекю. Официальный сайт представителя Везувий в Москве')
+@section('meta-description', 'Печи для бани, отопительные печи для дома и дачи, садовые и уличные печи -очаги: гриль, мангалы и барбекю. Каталог товаров Везувий в Москве')
+@section('meta-keywords', 'печи, камины, дымоходы, банные, бани, чугунные, дровяные, литье, для печей, купить, цена, офоициальный, сайт, везувий')
+
+@section('h1', 'Официальный сайт представителя Везувий в Москве')
+
+@section('content')
+
+    @if($category)
+    <div class="main_title_wrap">
+        <h1 class="main_title">{{$category->name}}</h1>
+        @if($category->subtitle)
+        <p class="main_subtitle">{{$category->subtitle}}</p>
+        @endif
+    </div>
+    @endif
+
+    <div class="main_list_wrap">
+        @foreach($posts as $post)
+            <div class="main_item_wrap">
+                <div class="main_item_img_wrap">
+                    <a href="{{route('post', $post->slug)}}" class="main_item_img_link">
+                        {{$post->getFirstMedia('main')}}
+                    </a>
+                </div>
+                <div class="main_item_body">
+                    <div class="main_item_category_wrap">
+                        @foreach($post->categories as $category)
+                            <a href="{{route('posts', $category->slug)}}" class="main_item_category">{{$category->name}}@if(!$loop->last),@endif</a>
+                        @endforeach
+                    </div>
+                    <h3 class="main_item_name_h3">
+                        <a href="{{route('post', $post->slug)}}" class="main_item_link">{{$post->name}}</a>
+                    </h3>
+                    <p class="main_item_txt">{{$post->short}}</p>
+                    <div class="main_item_time_wrap">
+                        <time class="main_item_time" datetime="2001-05-15">19 мая 2022</time>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+
+
+@endsection
