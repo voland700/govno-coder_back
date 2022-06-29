@@ -9,6 +9,8 @@ use Spatie\Sluggable\SlugOptions;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Image\Manipulations;
+
 
 
 class Post extends Model implements HasMedia
@@ -39,11 +41,26 @@ class Post extends Model implements HasMedia
             ->doNotGenerateSlugsOnUpdate();
     }
 
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaCollections(): void
     {
-        $this
-            ->addMediaConversion('main')
-            ->withResponsiveImages();
+        $this->addMediaCollection('main')
+            ->singleFile()
+            ->registerMediaConversions(
+                function () {
+                    $this
+                        ->addMediaConversion('full')
+                        ->fit(Manipulations::FIT_CONTAIN, 1080, 600);
+                    $this
+                        ->addMediaConversion('middle')
+                        ->fit(Manipulations::FIT_CONTAIN, 630, 350);
+                    $this
+                        ->addMediaConversion('small')
+                        ->fit(Manipulations::FIT_CONTAIN, 435, 242);
+                    $this
+                        ->addMediaConversion('tiny')
+                        ->fit(Manipulations::FIT_CONTAIN, 356, 198);
+                }
+            );
     }
 
     public function tags()
@@ -69,6 +86,24 @@ class Post extends Model implements HasMedia
         }else{
             return Str::of(strip_tags($this->description))->limit(160);
         }
+    }
+
+    public function getPreviewAttribute(){
+        $media =  $this->getFirstMedia('main');
+        $priew = [];
+        if( $this->getMedia('main')->isNotEmpty()){
+            $priew['full'] =  $media->hasGeneratedConversion('full') ?  $media->getUrl('full') : asset('images/src/no-photo/full.jpg');
+            $priew['middle'] =  $media->hasGeneratedConversion('middle') ?  $media->getUrl('middle') : asset('images/src/no-photo/middle.jpg');
+            $priew['small'] =  $media->hasGeneratedConversion('small') ?  $media->getUrl('small') : asset('images/src/no-photo/small.jpeg');
+            $priew['tiny'] =  $media->hasGeneratedConversion('tiny') ?  $media->getUrl('tiny') : asset('images/src/no-photo/tiny.jpeg');
+        } else {
+            $priew['full'] = asset('images/src/no-photo/full.jpg');
+            $priew['middle'] = asset('images/src/no-photo/middle.jpg');
+            $priew['small'] = asset('images/src/no-photo/small.jpg');
+            $priew['tiny'] = asset('images/src/no-photo/tiny.jpg');
+        }
+        return $priew;
+
     }
 
 

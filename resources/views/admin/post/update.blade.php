@@ -205,7 +205,7 @@
                         errorMessage.innerText = data.errorMessage;
                         if(!errorMessage.classList.contains('active')) errorMessage.classList.add('active');
                     }
-                    //console.log(data);
+                    console.log(data);
                 });
         }
     </script>

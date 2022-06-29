@@ -21,7 +21,16 @@
             <div class="main_item_wrap">
                 <div class="main_item_img_wrap">
                     <a href="{{route('post', $post->slug)}}" class="main_item_img_link">
-                        {{$post->getFirstMedia('main')}}
+                        @if($post->preview)
+                            <img src="{{$post->preview['full']}}" srcset="{{$post->preview['tiny']}} 1200w, {{$post->preview['small']}} 767w, {{$post->preview['middle']}} 767w, {{$post->preview['small']}} 525w, {{$post->preview['tiny']}} 415w"  alt="{{$post->name}}" class="main_item_img">
+                        @else
+                            <img src="{{asset('images/src/no-photo/full.jpg')}}" srcset="{{asset('images/src/no-photo/tiny.jpg')}} 1200w, {{asset('images/src/no-photo/small.jpg')}} 767w, {{asset('images/src/no-photo/middle.jpg')}} 767w, {{asset('images/src/no-photo/small.jpg')}} 525w, {{asset('images/src/no-photo/tiny.jpg')}} 415w"  alt="{{$post->name}}" class="main_item_img">
+                        @endif
+
+
+
+
+
                     </a>
                 </div>
                 <div class="main_item_body">

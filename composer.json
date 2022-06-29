@@ -13,6 +13,7 @@
         "laravel/framework": "^9.11",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
+        "spatie/image": "^2.2",
         "spatie/laravel-medialibrary": "^10.0.0",
         "spatie/laravel-sluggable": "^3.4"
     },

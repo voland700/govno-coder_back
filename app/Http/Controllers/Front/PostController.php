@@ -16,6 +16,7 @@ class PostController extends Controller
             $posts = $category->posts()->with('categories:id,name,slug')->where('active', 1)->paginate(12);
             return view('front.post.posts', compact('category', 'posts'));
 
+
             //dd($posts);
         }
 

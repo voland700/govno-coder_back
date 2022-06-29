@@ -171,9 +171,7 @@ class PostController extends Controller
             ]);
         }
         $post = Post::find($request->id);
-
-        if($mediaOld = $post->getMedia('main')) $mediaOld[0]->delete();
-
+        //if(array_key_exists(0, $post->getMedia('main')->toArray() ))  $post->getMedia('main')[0]->delete();
         if ($request->file) {
             $post->addMediaFromRequest('file')->toMediaCollection('main');
         }
@@ -192,4 +190,34 @@ class PostController extends Controller
             return false;
         }
     }
+
+
+    public function test()
+    {
+        $post = Post::find(14);
+
+
+
+
+        //dd($post->getMedia('main')->isNotEmpty());
+
+       dd($post->getFirstMedia('main')->getUrl('full'));
+        dd($post->getFirstMedia('main')->hasGeneratedConversion('full'));
+
+
+        //dd( array_key_exists(0, $post->getMedia('main')->toArray() ));
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
 }

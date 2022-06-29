@@ -66,4 +66,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'isadmin']], functio
     Route::post('/remove-img', [App\Http\Controllers\Admin\PostController::class, 'removeImg'])->name('remove.img');
     Route::post('/update-img', [App\Http\Controllers\Admin\PostController::class, 'updateImg'])->name('update.img');
 
+
+    Route::get('/test', [\App\Http\Controllers\Admin\PostController::class, 'test'])->name('admin.test');
 });
