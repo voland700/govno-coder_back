@@ -12,7 +12,6 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Image\Manipulations;
 
 
-
 class Post extends Model implements HasMedia
 {
     use HasSlug, InteractsWithMedia;
@@ -103,7 +102,31 @@ class Post extends Model implements HasMedia
             $priew['tiny'] = asset('images/src/no-photo/tiny.jpg');
         }
         return $priew;
+    }
 
+    public function getPostDate()
+    {
+        //return Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->translatedFormat('j F Y');
+
+        return  \Carbon\Carbon::parse($this->created_at)->translatedFormat('j F Y');
+    }
+
+
+    public function getTitleAttribute()
+    {
+        return (!$this->meta_title==NULL) ? $this->meta_title : $this->name.' - статя, обзор, рекомендация о програмирование';
+    }
+    public function getKeysAttribute()
+    {
+        return (!$this->meta_keywords==NULL) ? $this->meta_keywords : 'php, js, javascript, html, обзор, статья, програмирование, laravel';
+    }
+    public function getDescripAttribute()
+    {
+        return (!$this->meta_description==NULL) ? $this->meta_description : $this->name.'  - интересная и полезная информация. '.$this->name.' рекомендации и по шаговое руководство';
+    }
+    public function getNamedAttribute()
+    {
+        return (!$this->h1==NULL) ? $this->h1 : $this->name;
     }
 
 

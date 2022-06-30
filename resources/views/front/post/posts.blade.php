@@ -26,11 +26,6 @@
                         @else
                             <img src="{{asset('images/src/no-photo/full.jpg')}}" srcset="{{asset('images/src/no-photo/tiny.jpg')}} 1200w, {{asset('images/src/no-photo/small.jpg')}} 767w, {{asset('images/src/no-photo/middle.jpg')}} 767w, {{asset('images/src/no-photo/small.jpg')}} 525w, {{asset('images/src/no-photo/tiny.jpg')}} 415w"  alt="{{$post->name}}" class="main_item_img">
                         @endif
-
-
-
-
-
                     </a>
                 </div>
                 <div class="main_item_body">
@@ -44,12 +39,13 @@
                     </h3>
                     <p class="main_item_txt">{{$post->short}}</p>
                     <div class="main_item_time_wrap">
-                        <time class="main_item_time" datetime="2001-05-15">19 мая 2022</time>
+                        <time class="main_item_time" datetime="2001-05-15">{{ $post->getPostDate() }}</time>
                     </div>
                 </div>
             </div>
         @endforeach
     </div>
+    {{ $posts->links('front.layouts.pagination')}}
 
 
 @endsection

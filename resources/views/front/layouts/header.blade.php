@@ -55,7 +55,7 @@
 								<a href="{{route('news')}}" class="menu_link">Новости</a>
 							</li>
 							<li class="menu_item __active">
-								<a href="{{route('posts')}}" class="menu_link many">Статьи</a>
+								<a href="{{route('index')}}" class="menu_link many">Статьи</a>
                                 @if($categories)
 								<ul class="submenu_list">
                                     @foreach($categories as $category)

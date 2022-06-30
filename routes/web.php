@@ -19,13 +19,22 @@ Route::get('/news', [\App\Http\Controllers\Front\NewsController::class, 'list'])
 Route::get('/new/{slug}', [\App\Http\Controllers\Front\NewsController::class, 'item'])->name('new');
 
 
-Route::get('/posts/{slug?}', [\App\Http\Controllers\Front\PostController::class, 'list'])->name('posts');
+Route::get('/posts/{slug}', [\App\Http\Controllers\Front\PostController::class, 'list'])->name('posts');
 Route::get('/post/{slug}', [\App\Http\Controllers\Front\PostController::class, 'item'])->name('post');
 
 Route::get('/tags', [\App\Http\Controllers\Front\TagController::class, 'list'])->name('tags');
 Route::get('/tag/{slug}', [\App\Http\Controllers\Front\TagController::class, 'item'])->name('tag');
 
 
+
+Route::get('/user-auth', [App\Http\Controllers\Front\UserController::class, 'userAuth'])->name('user.auth');
+Route::post('/user-login', [App\Http\Controllers\Front\UserController::class, 'userAuthStore'])->name('user.auth.store');
+
+
+Route::get('/user-register', [App\Http\Controllers\Front\UserController::class, 'userRegister'])->name('user.register');
+Route::post('/user-store', [App\Http\Controllers\Front\UserController::class, 'userStore'])->name('user.store');
+
+Route::post('/comment-store', [App\Http\Controllers\Front\CommentController::class, 'store'])->name('comment.store');
 
 
 

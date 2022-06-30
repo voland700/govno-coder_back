@@ -21,7 +21,7 @@ mix.styles([
 ], 'public/css/main.css');
 
 mix.scripts([
-    'resources/assets/front/js/fancybox.esm.js',
+    'resources/assets/front/js/fancybox.umd.js',
     'resources/assets/front/js/prism.js'
 ], 'public/js/main.js').sourceMaps();
 
