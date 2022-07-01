@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Kalnoy\Nestedset\NodeTrait;
 use Cog\Contracts\Love\Reactable\Models\Reactable as ReactableInterface;
 use Cog\Laravel\Love\Reactable\Models\Traits\Reactable;
-
+use Carbon\Carbon;
 
 class Comment extends Model implements ReactableInterface
 {
@@ -34,7 +34,10 @@ class Comment extends Model implements ReactableInterface
     }
 
 
-
-
+    public function getCommentDate()
+    {
+        $time =  Carbon::parse($this->created_at);
+        return  $time->translatedFormat('j F Y').' в '.$time->hour.'.'.$time->minute;
+    }
 
 }

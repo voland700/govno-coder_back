@@ -42,7 +42,7 @@ class UserController extends Controller
                 'email' => $request->email,
                 'password' => $request->password,
             ])) {
-                return  response('', 200);
+                return  response(view('front.layouts.success')->render(), 200);
             } else {
                 $request->flash();
                 $errors[0] = "Hе корректный Email или Пароль";
@@ -85,7 +85,7 @@ class UserController extends Controller
             ]);
             event(new Registered($user));
             Auth::login($user);
-            return response('<h3>Ура! Вы зарегистрированы!</h3>', 200);
+            return  response(view('front.layouts.success')->render(), 200);
         }
     }
 

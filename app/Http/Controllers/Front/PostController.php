@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Comment;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
@@ -27,8 +28,10 @@ class PostController extends Controller
         $tags = $post->tags()->where(function (Builder $query) {
             return $query->where('active', 1)->select('id', 'name', 'slug');
         })->get();
+        $comments = Comment::withDepth()->with('user:id,name')->where([['post_id', $post->id], ['active', 1]])->get()->toTree();
+        //dd($comments);
 
-        return view('front.post.post', compact('post', 'categories', 'tags'));
+        return view('front.post.post', compact('post', 'categories', 'tags', 'comments'));
 
 
 

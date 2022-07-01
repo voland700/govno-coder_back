@@ -53,10 +53,51 @@
     <section class="comments_block">
         <h3 class="comments_title">Комментарии</h3>
         <div class="comments_list">
+            @if($comments->isNotEmpty())
+                @foreach($comments as $comment)
 
+                    <div class="comment_item">
+                        <div class="comment_img{{ Auth::id() == $comment->user->id ? ' user' : null}}">
+                            <svg class="coment_user">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#user"></use>
+                            </svg>
+                        </div>
+                        <div class="comment_content">
+                            <h5 class="comment_user">{{$comment->user->name}}</h5>
+                            <div class="comment_text">
+                                {{$comment->massage}}
+                                <div class="overflow_wrap"><span class="btn_show">показать</span></div>
+                            </div>
+                            <div class="commen_info">
+                                <span class="comment_time">{{$comment->getCommentDate()}}</span>
+                                <span class="comment_answer" data-id="{{$comment->id}}">Ответить</span>
+                             <span class="comment_btn_wrap">
+                                <span class="btn_like_block">
+                                    <a href="#" class="btn_dislike_link" data-commit_id="{{$comment->id}}" data-type="dislike">
+                                        <span class="icon-thumbs-down"></span>
+                                    </a>
+                                    <span class="like_count">4</span>
+                                </span>
+                                <span class="btn_like_block">
+                                    <a href="#" class="btn_like_link" data-commit_id="{{$comment->id}}" data-type="like">
+                                        <span class="icon-heart"></span>
+                                    </a>
+                                    <span class="like_count">12</span>
+                                </span>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
 
+                    @if(count($comment->children)>0)
+                        @foreach ($comment->children as $childComment)
+                             @include('front.layouts.child_comment', ['childComment' => $childComment])
+                        @endforeach
+                    @endif
 
+                @endforeach
 
+            @endif
         </div><!-- WRAPPER -->
 
         <div class="comment_form_wrap">
@@ -68,18 +109,19 @@
 
             <div class="comment_form_block">
                 <h5 class="comment_user">{{ Auth::check() ? Auth::user()->name : 'Гость'}} </h5>
-                <form action="#" method="POST" id="commentForm" class="comment_form">
-
-                    <input type="hidden" name="post_id" value="7">
-                    <input type="hidden" id="parentId" name="paren_id" value="0">
-                    <textarea name="comment" id="comment" class="comment_form_fild" cols="30" rows="10"></textarea>
+                <form action="{{route('comment.store')}}" method="POST" id="commentForm" class="comment_form">
+                    @csrf
+                    <input type="hidden" name="post_id" value="{{$post->id}}">
+                    <input type="hidden" id="parentId" name="parent_id" value="0">
+                    <textarea name="massage" id="comment" class="comment_form_fild" cols="30" rows="10"></textarea>
                     @if(Auth::check())
                         <input type="submit" class="comment_btn" value="Отправить">
                     @endif
                 </form>
                 @guest
-                    <span class="comment_btn">Регистрация</span>
-                    <span class="comment_btn">Войти</span>
+                    <div class="comment_valid" id="commentValid"></div>
+                    <a  href="{{route('user.register')}}" class="comment_auth_btn" id="registerBtn">Регистрация</a>
+                    <a href="{{route('user.auth')}}" class="comment_auth_btn"  id="loginBtn">Войти</a>
                 @endguest
             </div>
         </div><!-- FORM -->
@@ -99,6 +141,7 @@
         document.addEventListener('DOMContentLoaded', (event) => {
 
             let fancybox;
+            const comment = document.getElementById('comment');
 
             async function postData(url = '', data = {}) {
                 // Default options are marked with *
@@ -156,8 +199,7 @@
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(formData)
-
-                    })
+                        })
                         .then(function (response){
                             if(response.status == 422) valid = false;
                             if(response.status == 200) valid = true;
@@ -167,11 +209,15 @@
                         .then(data => {
                             if(valid){
                                 document.querySelector('.fancybox__content').innerHTML =  data;
-                                setTimeout(() => fancybox.close(), 3000);
-                                //console.log(data);
+                                setTimeout(function(){
+                                    fancybox.close()
+                                    location.reload();
+                                }, 2000);
+                                console.log(data);
                             }
                             if(!valid){
                                 document.querySelector('.fancybox__content').innerHTML = data;
+                                sendLogin()
                                 //console.log(data);
                             }
                         }).catch((error) => {
@@ -182,27 +228,7 @@
             }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             function getRegister(){
-
 
                 fetch('{{ route('user.register') }}')
                     .then((response) => {
@@ -238,18 +264,22 @@
                             .then(function (response){
                                 if(response.status == 400) valid = false;
                                 if(response.status == 200) valid = true;
-                                //console.log(valid);
+                                console.log(valid);
                                 return response;
                             }).then( response => response.text())
                             .then(data => {
                                 if(valid){
                                     document.querySelector('.fancybox__content').innerHTML = data;
-                                    setTimeout(() => fancybox.close(), 3000);
-                                    //console.log(data);
+                                    setTimeout(function(){
+                                        fancybox.close()
+                                        location.reload();
+                                    }, 3000);
+                                    console.log(data);
                                 }
                                 if(!valid){
                                     document.querySelector('.fancybox__content').innerHTML = data;
-                                    //console.log(data);
+                                    sendRegister();
+                                    console.log(data);
                                 }
                             }).catch((error) => {
                             //document.querySelector('.fancybox__content').innerHTML = data;
@@ -259,21 +289,24 @@
                 };
             }
 
+            // -- Для не аунтифицированных пользователей
+            if(document.getElementById('commentValid')){
+                const commentValid = document.getElementById('commentValid');
 
-
-
-
-
-
-            document.getElementById('authBtn').addEventListener('click', function (event){
-                event.preventDefault();
-                getLogIn();
-            });
-
-            document.getElementById('registerBtn').addEventListener('click', function (event){
-                event.preventDefault();
-                getRegister();
-            });
+                document.getElementById('loginBtn').addEventListener('click', function (event) {
+                    event.preventDefault();
+                    getLogIn();
+                    //alert('loginBtn')
+                });
+                document.getElementById('registerBtn').addEventListener('click', function (event) {
+                    event.preventDefault();
+                    getRegister();
+                    //alert('registerBtn')
+                });
+                comment.addEventListener('input', function () {
+                    commentValid.innerText = 'Sorry… Оставлять комментарии могут только зарегистрированные пользователи';
+                }, false);
+            }
 
 
 
