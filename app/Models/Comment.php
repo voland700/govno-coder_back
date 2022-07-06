@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Kalnoy\Nestedset\NodeTrait;
+
 use Cog\Contracts\Love\Reactable\Models\Reactable as ReactableInterface;
 use Cog\Laravel\Love\Reactable\Models\Traits\Reactable;
+
 use Carbon\Carbon;
 
 class Comment extends Model implements ReactableInterface
@@ -32,7 +34,6 @@ class Comment extends Model implements ReactableInterface
     {
         return $this->belongsTo(User::class);
     }
-
 
     public function getCommentDate()
     {

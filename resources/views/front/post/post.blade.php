@@ -71,20 +71,36 @@
                             <div class="commen_info">
                                 <span class="comment_time">{{$comment->getCommentDate()}}</span>
                                 <span class="comment_answer" data-id="{{$comment->id}}">Ответить</span>
-                             <span class="comment_btn_wrap">
-                                <span class="btn_like_block">
-                                    <a href="#" class="btn_dislike_link" data-commit_id="{{$comment->id}}" data-type="dislike">
-                                        <span class="icon-thumbs-down"></span>
-                                    </a>
-                                    <span class="like_count">4</span>
-                                </span>
-                                <span class="btn_like_block">
-                                    <a href="#" class="btn_like_link" data-commit_id="{{$comment->id}}" data-type="like">
-                                        <span class="icon-heart"></span>
-                                    </a>
-                                    <span class="like_count">12</span>
-                                </span>
-                            </span>
+                                <span class="comment_btn_wrap">
+                                @guest
+                                    <span class="btn_like_block">
+                                        <a href="javascript:void(0);" class="btn_like_link unavailable">
+                                            <span class="icon-thumbs-down unavailable"></span>
+                                        </a>
+                                        <span class="like_count">4</span>
+                                    </span>
+                                    <span class="btn_like_block">
+                                        <a  href="javascript:void(0);" class="btn_like_link unavailable">
+                                            <span class="icon-heart"></span>
+                                        </a>
+                                        <span class="like_count">12</span>
+                                    </span>
+                                @endguest
+                                @auth
+                                    <span class="btn_like_block">
+                                        <a href="{{route('comment.reaction')}}" class="btn_like_link available" data-commit_id="{{$comment->id}}" data-type="Dislike">
+                                            <span class="icon-thumbs-down"></span>
+                                        </a>
+                                        <span class="like_count">4</span>
+                                    </span>
+                                    <span class="btn_like_block">
+                                        <a href="{{route('comment.reaction')}}" class="btn_like_link available" data-commit_id="{{$comment->id}}" data-type="Like">
+                                            <span class="icon-heart"></span>
+                                        </a>
+                                        <span class="like_count">12</span>
+                                    </span>
+                                @endauth
+                                 </span>
                             </div>
                         </div>
                     </div>
@@ -96,6 +112,7 @@
                     @endif
 
                 @endforeach
+                    {{ $comments->links('front.layouts.comment_pagination')}}
 
             @endif
         </div><!-- WRAPPER -->
@@ -307,6 +324,157 @@
                     commentValid.innerText = 'Sorry… Оставлять комментарии могут только зарегистрированные пользователи';
                 }, false);
             }
+
+
+            // Comments - hide/show Overflow - content
+            if(document.querySelectorAll('.comment_text')){
+
+                function checkOverflow(e) {
+                    if(e.scrollWidth > e.offsetWidth || e.scrollHeight > e.offsetHeight){
+                        let overflowItem = e.querySelector('.overflow_wrap');
+                        overflowItem.style.display = 'flex';
+                        e.querySelector('.btn_show').addEventListener('click', function(event) {
+                            event.preventDefault();
+                            e.style.maxHeight = '100%';
+                            overflowItem.style.display = 'none';
+                        });
+                    }
+                }
+                document.querySelectorAll('.comment_text').forEach(item => checkOverflow(item));
+            }
+
+/*______________*/
+
+
+            // Comments Like / Dislike
+            if(document.querySelectorAll('.available')) {
+                document.querySelectorAll('.available').forEach(function (elem) {
+                    elem.addEventListener('click', function (event) {
+                        event.preventDefault();
+
+                        let formData = {
+                            'commentId': elem.dataset.commit_id,
+                            'type': elem.dataset.type
+                        }
+
+
+                        fetch('{{route('comment.reaction')}}', {
+                            method: 'POST', // or 'PUT'
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(formData)
+                            })
+                            .then(function (response){
+                                return response;
+                            }).then( response => response.text())
+                            .then(data => {
+
+                                console.log(data);
+
+                            }).catch((error) => {
+                                console.log(error);
+                            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    });
+                });
+            }
+
+
+
+
+
+
+
+
+
+
+
+            // If user doesn't auth  push Like / Dislike - show AUTH FORM
+            if(document.querySelectorAll('.unavailable')) {
+                document.querySelectorAll('.unavailable').forEach(function (elem) {
+                    elem.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        getLogIn();
+                        //alert('Можно только зарегистрированным пользователям!');
+                    });
+                });
+            }
+
+            // Ответ на коментарий.
+            if(document.querySelectorAll('.comment_answer')){
+                document.querySelectorAll('.comment_answer').forEach(function (item) {
+                    item.addEventListener('click', function(event) {
+                        //event.preventDefault();
+
+                        const comment = document.getElementById('comment');
+                        const form = document.getElementById('commentForm');
+                        const link = event.target;
+
+                        if(event.target.dataset.id) {
+                            document.getElementById('parentId').value = event.target.dataset.id;
+                        }
+                        const name = link.parentElement.parentElement.querySelector('.comment_user').innerText + ',  ';
+                        comment.textContent = name;
+
+                        function setCaretPosition(ctrl, pos) {
+                            // Modern browsers
+                            if (ctrl.setSelectionRange) {
+                                ctrl.focus();
+                                ctrl.setSelectionRange(pos, pos);
+                                // IE8 and below
+                            } else if (ctrl.createTextRange) {
+                                var range = ctrl.createTextRange();
+                                range.collapse(true);
+                                range.moveEnd('character', pos);
+                                range.moveStart('character', pos);
+                                range.select();
+                            }
+                        }
+                        setCaretPosition(comment, name.length);
+                        window.setTimeout( ()=>{ form.scrollIntoView({behavior: "smooth"}) }, 50 );
+                    })
+
+                });
+
+
+            }
+
+
+
+
+
+
+
+
+
+
 
 
 

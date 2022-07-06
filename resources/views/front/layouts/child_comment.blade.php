@@ -16,18 +16,35 @@
             <span class="comment_time">{{$childComment->getCommentDate()}}</span>
             <span class="comment_answer" data-id="{{$childComment->id}}">Ответить</span>
             <span class="comment_btn_wrap">
-                <span class="btn_like_block">
-                    <a href="#" class="btn_dislike_link" data-commit_id="{{$childComment->id}}" data-type="dislike">
-                        <span class="icon-thumbs-down"></span>
-                    </a>
-                    <span class="like_count">4</span>
-                </span>
-                <span class="btn_like_block">
-                    <a href="#" class="btn_like_link" data-commit_id="{{$childComment->id}}" data-type="like">
-                        <span class="icon-heart"></span>
-                    </a>
-                    <span class="like_count">12</span>
-                </span>
+
+             @guest
+                    <span class="btn_like_block">
+                        <a href="javascript:void(0);" class="btn_like_link unavailable">
+                            <span class="icon-thumbs-down"></span>
+                        </a>
+                        <span class="like_count">4</span>
+                    </span>
+                    <span class="btn_like_block">
+                        <a href="javascript:void(0);" class="btn_like_link unavailable">
+                            <span class="icon-heart"></span>
+                        </a>
+                        <span class="like_count">12</span>
+                    </span>
+                @endguest
+                @auth
+                    <span class="btn_like_block">
+                        <a href="{{route('comment.reaction')}}" class="btn_like_link available" data-commit_id="{{$childComment->id}}" data-type="Dislike">
+                            <span class="icon-thumbs-down"></span>
+                        </a>
+                        <span class="like_count">4</span>
+                    </span>
+                    <span class="btn_like_block">
+                        <a href="{{route('comment.reaction')}}" class="btn_like_link available" data-commit_id="{{$childComment->id}}" data-type="Like">
+                            <span class="icon-heart"></span>
+                        </a>
+                        <span class="like_count">12</span>
+                    </span>
+                @endauth
             </span>
         </div>
     </div>

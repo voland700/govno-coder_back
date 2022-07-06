@@ -2,7 +2,7 @@
     <nav class="comment_pagination_wrap" aria-label="Page navigation example">
         <ul class="comment_pagination_list">
             @if ($paginator->onFirstPage())
-                <li class="pagination_direct dormant"><a class="comment_pagination_direct_link prev" tabindex="-1" aria-disabled="true">«</a></li>
+                <li class="comment_pagination_direct dormant"><a class="comment_pagination_direct_link prev" tabindex="-1" aria-disabled="true">«</a></li>
             @else
                 <li class="comment_pagination_direct"><a class="comment_pagination_direct_link prev" href="{{ $paginator->previousPageUrl() }}" tabindex="-1" aria-disabled="true">«</a></li>
             @endif

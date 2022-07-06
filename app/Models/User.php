@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Cog\Contracts\Love\Reacterable\Models\Reacterable as ReacterableInterface;
 use Cog\Laravel\Love\Reacterable\Models\Traits\Reacterable;
+
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -54,6 +55,7 @@ class User extends Authenticatable implements ReacterableInterface
     {
         return $this->is_admin === 1;
     }
+
     public function comments()
     {
         return $this->hasMany(Comment::class);

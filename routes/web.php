@@ -36,7 +36,7 @@ Route::post('/user-store', [App\Http\Controllers\Front\UserController::class, 'u
 
 Route::post('/comment-store', [App\Http\Controllers\Front\CommentController::class, 'store'])->name('comment.store');
 
-
+Route::post('/comment-reaction', [App\Http\Controllers\Front\CommentController::class, 'reaction'])->name('comment.reaction');
 
 
 Route::get('/dashboard', function () {

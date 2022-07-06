@@ -14,25 +14,53 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         if($request->massage && Auth::check() ){
-            //$post = Post::where('id', $request->post_id)->select('id', 'slug')->first();
-
             Comment::create([
                 'post_id'   => $request->post_id,
                 'parent_id' => $request->parent_id,
                 'user_id'   => $request->user()->id,
                 'massage'   => $request->massage
             ]);
-
-            //dd($request->all());
-
         }
         return back()->withInput();
+    }
+
+
+    public function reaction(Request $request)
+    {
+        if(Auth::check() ){
+            $user = Auth::user();
+            $comment = Comment::find($request->commentId);
+
+            //$isRegistered = $user->isRegisteredAsLoveReacter();
+            //$isRegistered = $comment->isRegisteredAsLoveReactant();
+
+           //$reactionType =  ReactionType::fromName('Like');
+            $reacter = $user->getLoveReacter();
+            $reactant = $comment->getLoveReactant();
+            //$comment = $reacter->reactTo($reactant, $reactionType);
 
 
 
-        //dd($request->all());
-        //dd(Auth::id());
-        //return 'OK';
+            //$reacterFacade = $user->viaLoveReacter();
+            //$reacterFacade->reactTo($comment, 'Like');
+
+
+
+            $isReacted = $reactant->isReactedBy($reacter); // if - реагировал
+
+
+
+
+
+        }
+
+
+
+
+        return $isReacted;
+
+
 
     }
+
 }
