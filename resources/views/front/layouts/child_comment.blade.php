@@ -22,27 +22,35 @@
                         <a href="javascript:void(0);" class="btn_like_link unavailable">
                             <span class="icon-thumbs-down"></span>
                         </a>
-                        <span class="like_count">4</span>
+                        <span class="like_count-dislike">{{$childComment->getDislikeCount()}}</span>
                     </span>
                     <span class="btn_like_block">
                         <a href="javascript:void(0);" class="btn_like_link unavailable">
                             <span class="icon-heart"></span>
                         </a>
-                        <span class="like_count">12</span>
+                        <span class="like_count-like">{{$childComment->getLikeCount()}}</span>
                     </span>
                 @endguest
                 @auth
-                    <span class="btn_like_block">
-                        <a href="{{route('comment.reaction')}}" class="btn_like_link available" data-commit_id="{{$childComment->id}}" data-type="Dislike">
+                    <span class="btn_like_block {{$childComment->user_reaction == 'dislike' ? 'dislike' : null }}">
+                        @if($childComment->user_reaction == 'dislike')
+                        <a class="btn_dislike_link">
+                        @else
+                        <a href="{{route('comment.reaction')}}" class="btn_dislike_link available" data-commit_id="{{$childComment->id}}" data-type="Dislike">
+                        @endif
                             <span class="icon-thumbs-down"></span>
                         </a>
-                        <span class="like_count">4</span>
+                        <span class="like_count-dislike">{{$childComment->getDislikeCount()}}</span>
                     </span>
-                    <span class="btn_like_block">
-                        <a href="{{route('comment.reaction')}}" class="btn_like_link available" data-commit_id="{{$childComment->id}}" data-type="Like">
+                    <span class="btn_like_block {{$childComment->user_reaction == 'like' ? 'like' : null }}">
+                        @if($childComment->user_reaction == 'like')
+                        <a  class="btn_like_link">
+                         @else
+                         <a href="{{route('comment.reaction')}}" class="btn_like_link available" data-commit_id="{{$childComment->id}}" data-type="Like">
+                         @endif
                             <span class="icon-heart"></span>
                         </a>
-                        <span class="like_count">12</span>
+                        <span class="like_count-like">{{$childComment->getLikeCount()}}</span>
                     </span>
                 @endauth
             </span>

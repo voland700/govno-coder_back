@@ -77,27 +77,35 @@
                                         <a href="javascript:void(0);" class="btn_like_link unavailable">
                                             <span class="icon-thumbs-down unavailable"></span>
                                         </a>
-                                        <span class="like_count">4</span>
+                                        <span class="like_count-dislike">{{$comment->getDislikeCount()}}</span>
                                     </span>
                                     <span class="btn_like_block">
                                         <a  href="javascript:void(0);" class="btn_like_link unavailable">
                                             <span class="icon-heart"></span>
                                         </a>
-                                        <span class="like_count">12</span>
+                                        <span class="like_count-like">{{$comment->getLikeCount()}}</span>
                                     </span>
                                 @endguest
                                 @auth
-                                    <span class="btn_like_block">
-                                        <a href="{{route('comment.reaction')}}" class="btn_like_link available" data-commit_id="{{$comment->id}}" data-type="Dislike">
+                                    <span class="btn_like_block {{$comment->user_reaction == 'dislike' ? 'dislike' : null}}">
+                                        @if($comment->user_reaction == 'dislike')
+                                        <a class="btn_dislike_link">
+                                        @else
+                                        <a href="{{route('comment.reaction')}}" class="btn_dislike_link available" data-commit_id="{{$comment->id}}" data-type="Dislike">
+                                        @endif
                                             <span class="icon-thumbs-down"></span>
                                         </a>
-                                        <span class="like_count">4</span>
+                                        <span class="like_count-dislike">{{$comment->getDislikeCount()}}</span>
                                     </span>
-                                    <span class="btn_like_block">
+                                    <span class="btn_like_block {{ $comment->user_reaction == 'like' ? 'like' : null }}">
+                                        @if($comment->user_reaction == 'like')
+                                        <a class="btn_like_link">
+                                        @else
                                         <a href="{{route('comment.reaction')}}" class="btn_like_link available" data-commit_id="{{$comment->id}}" data-type="Like">
+                                        @endif
                                             <span class="icon-heart"></span>
                                         </a>
-                                        <span class="like_count">12</span>
+                                        <span class="like_count-like">{{$comment->getLikeCount()}}</span>
                                     </span>
                                 @endauth
                                  </span>
@@ -356,7 +364,20 @@
                             'commentId': elem.dataset.commit_id,
                             'type': elem.dataset.type
                         }
-
+                        //получить ближайшего родителя по селектору
+                        function closest(el, selector) {
+                            if (Element.prototype.closest) {
+                                return el.closest(selector);
+                            }
+                            let parent = el;
+                            while (parent) {
+                                if (parent.matches(selector)) {
+                                    return parent;
+                                }
+                                parent = parent.parentElement;
+                            }
+                            return null;
+                        }
 
                         fetch('{{route('comment.reaction')}}', {
                             method: 'POST', // or 'PUT'
@@ -370,50 +391,17 @@
                                 return response;
                             }).then( response => response.text())
                             .then(data => {
-
+                                let parent = closest(event.target, '.comment_btn_wrap');
+                                console.log(parent);
+                                parent.innerHTML = data;
                                 console.log(data);
 
                             }).catch((error) => {
                                 console.log(error);
                             });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     });
                 });
             }
-
-
-
-
-
-
-
-
-
 
 
             // If user doesn't auth  push Like / Dislike - show AUTH FORM

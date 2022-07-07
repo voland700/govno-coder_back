@@ -29,38 +29,61 @@ class CommentController extends Controller
     {
         if(Auth::check() ){
             $user = Auth::user();
-            $comment = Comment::find($request->commentId);
+            $comment = Comment::with('user:id,name')->with([
+                'loveReactant.reactions.reacter.reacterable',
+                'loveReactant.reactions.type',
+                'loveReactant.reactionCounters',
+                'loveReactant.reactionTotal',
+            ])->find($request->commentId);
 
-            //$isRegistered = $user->isRegisteredAsLoveReacter();
-            //$isRegistered = $comment->isRegisteredAsLoveReactant();
-
-           //$reactionType =  ReactionType::fromName('Like');
-            $reacter = $user->getLoveReacter();
-            $reactant = $comment->getLoveReactant();
-            //$comment = $reacter->reactTo($reactant, $reactionType);
-
-
-
-            //$reacterFacade = $user->viaLoveReacter();
-            //$reacterFacade->reactTo($comment, 'Like');
-
-
-
-            $isReacted = $reactant->isReactedBy($reacter); // if - реагировал
-
-
-
-
-
+            $reacterFacade = $user->viaLoveReacter();
+            if($reacterFacade->hasReactedTo($comment)){
+                if($reacterFacade->hasReactedTo($comment, 'Like')) return false;
+                if($reacterFacade->hasReactedTo($comment, 'Dislike')) return false;
+            }
+            $reacterFacade->reactTo($comment, $request->type);
+            $comment = Comment::with('user:id,name')->with([
+                'loveReactant.reactions.reacter.reacterable',
+                'loveReactant.reactions.type',
+                'loveReactant.reactionCounters',
+                'loveReactant.reactionTotal',
+            ])->find($request->commentId);
+            return view('front.layouts.comment_ajax', compact('comment'));
         }
 
 
+    }
 
 
-        return $isReacted;
-
-
+    public function test()
+    {
+        $comment = Comment::where('id', 3)->with('user:id,name')->with([
+            'loveReactant.reactions.reacter.reacterable',
+            'loveReactant.reactions.type',
+            'loveReactant.reactionCounters',
+            'loveReactant.reactionTotal',
+        ])->first();
+        //$user = Auth::user();
+       dd($comment->user_reaction);
+        //dd($user->name);
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

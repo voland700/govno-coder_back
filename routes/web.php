@@ -39,6 +39,11 @@ Route::post('/comment-store', [App\Http\Controllers\Front\CommentController::cla
 Route::post('/comment-reaction', [App\Http\Controllers\Front\CommentController::class, 'reaction'])->name('comment.reaction');
 
 
+Route::get('/comment-test', [App\Http\Controllers\Front\CommentController::class, 'test']);
+
+
+
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');

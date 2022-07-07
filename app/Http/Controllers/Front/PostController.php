@@ -28,19 +28,18 @@ class PostController extends Controller
         $tags = $post->tags()->where(function (Builder $query) {
             return $query->where('active', 1)->select('id', 'name', 'slug');
         })->get();
-        $comments = Comment::withDepth()->with('user:id,name')->where([['post_id', $post->id], ['active', 1]])->paginate(10);
-        $comments->setCollection($comments->getCollection()->toTree());
 
+        $comments = Comment::withDepth()->with('user:id,name')->with([
+                'loveReactant.reactions.reacter.reacterable',
+                'loveReactant.reactions.type',
+                'loveReactant.reactionCounters',
+                'loveReactant.reactionTotal',
+            ])->where([['post_id', $post->id], ['active', 1]])->paginate(10);
+        $comments->setCollection($comments->getCollection()->toTree());
 
         return view('front.post.post', compact('post', 'categories', 'tags', 'comments'));
 
-
-
         //$comments = Comment::where('post_id', $post->id)->get()->toTree()->paginate(10);
-
-
-
-
     }
 
 
