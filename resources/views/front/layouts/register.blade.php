@@ -28,7 +28,7 @@
 
         <div class="form_add mt_2">
             <div class="form_add_link">
-                <a class="form_link" href="{{ route('user.auth') }}" tabindex="0">Уже зарегистрированы?</a>
+                <a class="form_link" href="{{ route('user.auth') }}" id="toLoginForm" tabindex="0">Уже зарегистрированы?</a>
             </div>
             <button type="submit" class="formBtn" id="formBtn">Register</button>
         </div>

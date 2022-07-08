@@ -29,7 +29,7 @@ class CommentController extends Controller
     {
         if(Auth::check() ){
             $user = Auth::user();
-            $comment = Comment::with('user:id,name')->with([
+            $comment = Comment::with([
                 'loveReactant.reactions.reacter.reacterable',
                 'loveReactant.reactions.type',
                 'loveReactant.reactionCounters',
@@ -42,16 +42,15 @@ class CommentController extends Controller
                 if($reacterFacade->hasReactedTo($comment, 'Dislike')) return false;
             }
             $reacterFacade->reactTo($comment, $request->type);
-            $comment = Comment::with('user:id,name')->with([
+            $comment = Comment::with([
                 'loveReactant.reactions.reacter.reacterable',
                 'loveReactant.reactions.type',
                 'loveReactant.reactionCounters',
                 'loveReactant.reactionTotal',
             ])->find($request->commentId);
-            return view('front.layouts.comment_ajax', compact('comment'));
+            $view = view('front.layouts.comment_ajax', compact('comment'))->render();
+            return ['status' => 200, 'view' => $view];
         }
-
-
     }
 
 
@@ -66,7 +65,6 @@ class CommentController extends Controller
         //$user = Auth::user();
        dd($comment->user_reaction);
         //dd($user->name);
-
     }
 
 

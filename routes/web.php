@@ -38,7 +38,7 @@ Route::post('/comment-store', [App\Http\Controllers\Front\CommentController::cla
 
 Route::post('/comment-reaction', [App\Http\Controllers\Front\CommentController::class, 'reaction'])->name('comment.reaction');
 
-
+//remove
 Route::get('/comment-test', [App\Http\Controllers\Front\CommentController::class, 'test']);
 
 
@@ -73,6 +73,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'isadmin']], functio
     Route::resource('/category', \App\Http\Controllers\Admin\CategoryController::class);
     Route::resource('/tag', \App\Http\Controllers\Admin\TagController::class);
     Route::resource('/post', \App\Http\Controllers\Admin\PostController::class);
+    Route::get('/users', [\App\Http\Controllers\Admin\UsersController::class, 'index'])->name('admin.users');
+
+    Route::get('/users', [\App\Http\Controllers\Admin\UsersController::class, 'index'])->name('admin.users');
+    Route::get('/user-detail/{id}', [\App\Http\Controllers\Admin\UsersController::class, 'detail'])->name('admin.users.detail');
+
+
 
     //Route::post('/upload-file',[\App\Http\Controllers\Admin\PostController::class, 'upload_file'])->name('dropzone.upload');
     //Route::post('/remove-img',[\App\Http\Controllers\Admin\PostController::class, 'remove_img'])->name('remove.img');

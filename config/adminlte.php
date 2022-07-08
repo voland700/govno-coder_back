@@ -263,6 +263,14 @@ return [
             'route'       => 'post.index',
             'icon'        => 'far fa-fw fa-file'
         ],
+        [
+            'text'        => 'Пользователи',
+            'route'       => 'admin.users',
+            'icon'        => 'fas fa-fw fa-user'
+        ],
+
+
+
         // -- Удалить данные пункты меню
         ['header' => 'account_settings'],
         [

@@ -20,14 +20,14 @@
         <!-- Remember Me -->
         <div class="form_block">
             <label for="remember_me" class="form_lable">
-                <input id="remember_me" type="checkbox" class="form_check" name="remember" tabindex="0">
+                <input id="remember_me" type="checkbox" class="form_check" name="remember" tabindex="0" checked>
                 <span class="form_udertext">Запомнить меня</span>
             </label>
         </div>
 
         <div class="form_add">
             <div class="form_add_link">
-                <a class="form_link" href="{{ route('register') }}" tabindex="0">Зарегистрироваться</a>
+                <a class="form_link" href="{{ route('register') }}" id="toRegisterForm" tabindex="0">Зарегистрироваться</a>
                 @if (Route::has('password.request'))
                     <a class="form_link" href="{{ route('password.request') }}" tabindex="0">Забыли пароль?</a>
                 @endif

@@ -200,6 +200,7 @@
                     .then((data) => {
                         fancybox = Fancybox.show([{ src: data, type: "html" }]);
                         sendLogin();
+                        toRegister();
                     });
             }
 
@@ -262,6 +263,7 @@
                     .then((data) => {
                         fancybox = Fancybox.show([{ src: data, type: "html" }]);
                         sendRegister();
+                        tologin();
                     });
 
                 function sendRegister(){
@@ -296,7 +298,7 @@
                                 if(valid){
                                     document.querySelector('.fancybox__content').innerHTML = data;
                                     setTimeout(function(){
-                                        fancybox.close()
+                                        fancybox.close();
                                         location.reload();
                                     }, 3000);
                                     console.log(data);
@@ -322,6 +324,7 @@
                     event.preventDefault();
                     getLogIn();
                     //alert('loginBtn')
+
                 });
                 document.getElementById('registerBtn').addEventListener('click', function (event) {
                     event.preventDefault();
@@ -333,6 +336,23 @@
                 }, false);
             }
 
+            // -- переход из формы Login на форму для регистрации
+            function toRegister(){
+                document.getElementById('toRegisterForm').addEventListener('click', function (event) {
+                    event.preventDefault();
+                    fancybox.close();
+                    getRegister();
+                });
+            }
+
+            // -- переход из формы Registration на форму входа
+            function tologin(){
+                document.getElementById('toLoginForm').addEventListener('click', function (event) {
+                    event.preventDefault();
+                    fancybox.close();
+                    getLogIn();
+                });
+            }
 
             // Comments - hide/show Overflow - content
             if(document.querySelectorAll('.comment_text')){
@@ -356,6 +376,9 @@
 
             // Comments Like / Dislike
             if(document.querySelectorAll('.available')) {
+
+
+            function likeDislike() {
                 document.querySelectorAll('.available').forEach(function (elem) {
                     elem.addEventListener('click', function (event) {
                         event.preventDefault();
@@ -389,19 +412,25 @@
                             })
                             .then(function (response){
                                 return response;
-                            }).then( response => response.text())
+                            }).then( response => response.json())
                             .then(data => {
                                 let parent = closest(event.target, '.comment_btn_wrap');
-                                console.log(parent);
-                                parent.innerHTML = data;
                                 console.log(data);
-
+                                if(data.status == 200){
+                                    parent.innerHTML = data.view;
+                                    likeDislike(); //рекурсивный вызов функции
+                                }
+                                console.log(data.view);
                             }).catch((error) => {
                                 console.log(error);
                             });
                     });
                 });
-            }
+            }// ended function likeDislike()
+
+            likeDislike();
+
+        }
 
 
             // If user doesn't auth  push Like / Dislike - show AUTH FORM
@@ -428,7 +457,7 @@
                         if(event.target.dataset.id) {
                             document.getElementById('parentId').value = event.target.dataset.id;
                         }
-                        const name = link.parentElement.parentElement.querySelector('.comment_user').innerText + ',  ';
+                        const name = link.parentElement.parentElement.querySelector('.comment_user').innerHTML + ', - '+'\r\n';
                         comment.textContent = name;
 
                         function setCaretPosition(ctrl, pos) {
