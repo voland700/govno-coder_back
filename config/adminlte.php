@@ -264,11 +264,15 @@ return [
             'icon'        => 'far fa-fw fa-file'
         ],
         [
+            'text'        => 'Коментарии',
+            'route'       => 'admin.comments',
+            'icon'        => 'fas fa-fw fa-comments'
+        ],
+        [
             'text'        => 'Пользователи',
             'route'       => 'admin.users',
             'icon'        => 'fas fa-fw fa-user'
         ],
-
 
 
         // -- Удалить данные пункты меню

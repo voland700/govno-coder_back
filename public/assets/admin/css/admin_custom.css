@@ -85,3 +85,32 @@
 .post_img_error_message.active{
     display: block;
 }
+
+.admin-comment-link{
+    display: block;
+    overflow: hidden;
+    line-height: 1.3;
+}
+.admin-comment{
+    overflow: hidden;
+    line-height: 1.4;
+    font-style: italic;
+}
+
+.admin-comment-t{
+   display: flex;
+}
+.admin-comment-text{
+    display: inline-block;
+    width: 100%;
+    background-color: #a4f8df;
+    border: 1px solid #88cfba;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.delimiter{
+    display: inline-block;
+    width: 3rem;
+}
+

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Kalnoy\Nestedset\NodeTrait;
-
+use Illuminate\Support\Str;
 use Cog\Contracts\Love\Reactable\Models\Reactable as ReactableInterface;
 use Cog\Laravel\Love\Reactable\Models\Traits\Reactable;
 
@@ -65,6 +65,12 @@ class Comment extends Model implements ReactableInterface
         } else {
             return null;
         }
+    }
+
+    public function getShortAttribute()
+    {
+        return Str::of(strip_tags($this->massage))->limit(150);
+
     }
 
 

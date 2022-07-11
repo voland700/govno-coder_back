@@ -19,5 +19,4 @@ class UsersController extends Controller
         $user =  User::where('id', $id)->first();
         return view('admin.user.detail', compact('user'));
     }
-
 }

@@ -78,6 +78,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'isadmin']], functio
     Route::get('/users', [\App\Http\Controllers\Admin\UsersController::class, 'index'])->name('admin.users');
     Route::get('/user-detail/{id}', [\App\Http\Controllers\Admin\UsersController::class, 'detail'])->name('admin.users.detail');
 
+    Route::get('/comments', [\App\Http\Controllers\Admin\CommentController::class, 'index'])->name('admin.comments');
+    Route::get('/comments-tree/{id}', [\App\Http\Controllers\Admin\CommentController::class, 'commentsTree'])->name('admin.comments.tree');
+
+    Route::get('/comments-edit/{id}', [\App\Http\Controllers\Admin\CommentController::class, 'edit'])->name('comment.edit');
+    Route::delete('/comments-destroy/{id}', [\App\Http\Controllers\Admin\CommentController::class, 'destroy'])->name('comment.destroy');
+
+
 
 
     //Route::post('/upload-file',[\App\Http\Controllers\Admin\PostController::class, 'upload_file'])->name('dropzone.upload');
