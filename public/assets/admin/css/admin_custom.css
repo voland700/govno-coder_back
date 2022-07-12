@@ -103,7 +103,7 @@
 .admin-comment-text{
     display: inline-block;
     width: 100%;
-    background-color: #a4f8df;
+    background-color: rgba(164, 248, 223, .5);;
     border: 1px solid #88cfba;
     border-radius: 10px;
     padding: 5px;

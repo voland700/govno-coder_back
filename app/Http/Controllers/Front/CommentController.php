@@ -14,12 +14,13 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         if($request->massage && Auth::check() ){
-            Comment::create([
+            $comment = Comment::create([
                 'post_id'   => $request->post_id,
                 'parent_id' => $request->parent_id,
                 'user_id'   => $request->user()->id,
                 'massage'   => $request->massage
             ]);
+            $comment::fixTree();
         }
         return back()->withInput();
     }
@@ -52,36 +53,4 @@ class CommentController extends Controller
             return ['status' => 200, 'view' => $view];
         }
     }
-
-
-    public function test()
-    {
-        $comment = Comment::where('id', 3)->with('user:id,name')->with([
-            'loveReactant.reactions.reacter.reacterable',
-            'loveReactant.reactions.type',
-            'loveReactant.reactionCounters',
-            'loveReactant.reactionTotal',
-        ])->first();
-        //$user = Auth::user();
-       dd($comment->user_reaction);
-        //dd($user->name);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

@@ -15,7 +15,7 @@ class CommentController extends Controller
         $comments = Comment::with([
             'user:id,name',
             'post:id,name'
-        ])->orderBy('created_at', 'ASC')->paginate(10);
+        ])->orderBy('id', 'ASC')->paginate(10);
         return view('admin.comment.index', compact('comments'));
     }
 
@@ -30,14 +30,33 @@ class CommentController extends Controller
 
     public function edit($id)
     {
-        //
+        $comment = Comment::with([
+            'loveReactant.reactions.reacter.reacterable',
+            'loveReactant.reactions.type',
+            'loveReactant.reactionCounters',
+            'loveReactant.reactionTotal',
+        ])->where('id', $id)->with('user:id,name')->first();
+        $post = Post::where('id', $comment->post_id)->select('id', 'name')->first();
+        return view('admin.comment.edit', compact('comment', 'post'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $comment = Comment::find($id);
+        $data = $request->all();
+        $data['active'] = $request->active ? 1 : 0;
+        $comment->update($data);
+        $comment::fixTree();
+        return redirect()->route('admin.comments')->with('success', 'Коментарий успешно изменен');
+
     }
 
     public function destroy($id)
     {
-        //
+        $comment = Comment::find($id);
+        $comment->delete();
+        $comment::fixTree();
+        return redirect()->route('admin.comments')->with('success', 'Коментарий успешно удалён');
     }
-
-
 
 }

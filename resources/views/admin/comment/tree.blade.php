@@ -69,23 +69,6 @@
                                 @include('admin.comment.child_comments', ['childComment' =>$childComment])
                             @endforeach
                         @endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     @endforeach
                     </tbody>
                 </table>
@@ -105,5 +88,5 @@
 @stop
 
 @section('js')
-    <script> console.log('Hi!'); </script>
+
 @stop
