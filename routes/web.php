@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [App\Http\Controllers\Front\IndexController::class, 'index'])->name('index');
+Route::get('/', [\App\Http\Controllers\Front\PostController::class, 'index'])->name('index');
 
 Route::get('/news', [\App\Http\Controllers\Front\NewsController::class, 'list'])->name('news');
 Route::get('/new/{slug}', [\App\Http\Controllers\Front\NewsController::class, 'item'])->name('new');
@@ -23,7 +23,7 @@ Route::get('/posts/{slug}', [\App\Http\Controllers\Front\PostController::class, 
 Route::get('/post/{slug}', [\App\Http\Controllers\Front\PostController::class, 'item'])->name('post');
 
 Route::get('/tags', [\App\Http\Controllers\Front\TagController::class, 'list'])->name('tags');
-Route::get('/tag/{slug}', [\App\Http\Controllers\Front\TagController::class, 'item'])->name('tag');
+Route::get('/tag/{slug}', [\App\Http\Controllers\Front\TagController::class, 'tags'])->name('tag');
 
 
 
@@ -96,6 +96,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'isadmin']], functio
     Route::post('/remove-img', [App\Http\Controllers\Admin\PostController::class, 'removeImg'])->name('remove.img');
     Route::post('/update-img', [App\Http\Controllers\Admin\PostController::class, 'updateImg'])->name('update.img');
 
+    Route::get('/parser', [App\Http\Controllers\News\NewsController::class, 'getNews'])->name('parser');
+    Route::get('/pars-links', [App\Http\Controllers\News\NewsController::class, 'parsingListLinks'])->name('pars.links');
 
     Route::get('/test', [\App\Http\Controllers\Admin\PostController::class, 'test'])->name('admin.test');
+
+
+
+
 });

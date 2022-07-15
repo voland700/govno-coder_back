@@ -15,7 +15,8 @@
         "laravel/tinker": "^2.7",
         "spatie/image": "^2.2",
         "spatie/laravel-medialibrary": "^10.0.0",
-        "spatie/laravel-sluggable": "^3.4"
+        "spatie/laravel-sluggable": "^3.4",
+        "symfony/dom-crawler": "^6.1"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.12",
@@ -35,6 +36,9 @@
         }
     },
     "autoload-dev": {
+        "files": [
+            "app/Http/Helpers/helpers.php"
+        ],
         "psr-4": {
             "Tests\\": "tests/"
         }

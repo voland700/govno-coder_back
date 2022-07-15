@@ -14,8 +14,12 @@
         <p class="main_subtitle">{{$category->subtitle}}</p>
         @endif
     </div>
+    @else
+        <div class="main_title_wrap">
+            <h1 class="main_title">Программирование и веб-разработка</h1>
+            <p class="main_subtitle">Подборка статей, обзоров и рекомендации по программированию и веб-разработке</p>
+        </div>
     @endif
-
     <div class="main_list_wrap">
         @foreach($posts as $post)
             <div class="main_item_wrap">
@@ -46,6 +50,4 @@
         @endforeach
     </div>
     {{ $posts->links('front.layouts.pagination')}}
-
-
 @endsection

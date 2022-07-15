@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <title>@yield('meta-title', 'Програмированеие и вебразработка, руководства, статьи, обзоры технологий по прогрмированю, разработки сайтов')</title>
-    <meta name="description" content="@yield('meta-description', 'Печи для бани, отопительные печи для дома и дачи, садовые и уличные печи -очаги: грил, мангалы и барбекю. Каталог товаров Везувий в Москве')">
-    <meta name="keywords" content="@yield('meta-keywords', 'печи, камины, дымоходы, банные, бани, чугунные, дровяные, литье, для печей, купить, цена, офоициальный, сайт, везувий')">
+    <meta name="description" content="@yield('meta-description', 'Информация для программистов и веб-разработчиков: новости, обзоры и статьи, последние новости IT и компьютерной безопасности')">
+    <meta name="keywords" content="@yield('meta-keywords', 'it, компьюторы, програмирование, веб, разработка, сайты, обзор,руководство, php, javascript, html, информация, безопастность, laravel, bitrix, ларавель, битрикс')">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="/favicon.ico">

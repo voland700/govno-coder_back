@@ -12,6 +12,13 @@ use App\Models\Category;
 
 class PostController extends Controller
 {
+    public function index()
+    {
+        $category = false;
+        $posts = Post::with('categories:id,name,slug')->where('active', 1)->paginate(12);
+        return view('front.post.posts', compact('category', 'posts'));
+    }
+
     public function list(Request $request)
     {
         $category = Category::where([['active', 1], ['slug', $request->slug]])->first();
