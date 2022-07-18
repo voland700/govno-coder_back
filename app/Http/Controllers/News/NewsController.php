@@ -19,7 +19,6 @@ class NewsController extends Controller
 
         $links = ParserLinks::getLinksYesterday($rss);
 
-
         if($links){
             foreach ($links as $link){
                 $parser = new ParserContent;
@@ -35,7 +34,6 @@ class NewsController extends Controller
                 }
             }
         }
-
         echo '<h1>OK</h1>';
     }
 

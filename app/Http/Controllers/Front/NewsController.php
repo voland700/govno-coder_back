@@ -10,7 +10,7 @@ class NewsController extends Controller
 {
     public function list()
     {
-        $news  = Information::where('active', 1)->select('id', 'title', 'slug', 'preview', 'image', 'created_at')->paginate(12);
+        $news  = Information::where('active', 1)->select('id', 'title', 'slug', 'preview', 'image', 'created_at')->orderBy('created_at', 'DESC')->paginate(12);
         return view('front.news.list', compact('news'));
     }
 

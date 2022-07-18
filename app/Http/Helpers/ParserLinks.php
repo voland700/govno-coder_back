@@ -4,6 +4,8 @@
 namespace App\Http\Helpers;
 
 use Symfony\Component\DomCrawler\Crawler;
+use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 use Carbon\Carbon;
 
 class ParserLinks
@@ -21,9 +23,10 @@ class ParserLinks
         });
 
         self::$links = $rss->each(function (Crawler $node, $i) {
-            return $node->children('link')->text();
+            $link =  $node->children('link')->text();
+            if(Str::contains($link, '/news/')) return $link;
         });
-
+        self::$links = Arr::whereNotNull(self::$links);
         return self::$links;
     }
 }

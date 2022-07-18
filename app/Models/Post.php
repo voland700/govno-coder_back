@@ -130,6 +130,39 @@ class Post extends Model implements HasMedia
     }
 
 
+    public function scopeLike($query, $s)
+    {
+
+        $s= iconv_substr($s, 0, 64);
+        $s = preg_replace('#[^0-9a-zA-ZА-Яа-яёЁ]#u', ' ', $s);
+        $s = preg_replace('#\s+#u', ' ', $s);
+        $s = trim($s);
+
+        if (empty($s)) {
+            return $query->whereNull('id'); // возвращаем пустой результат
+        }
+        $temp = explode(' ', $s);
+        $words = [];
+        $stemmer = new \App\Http\Helpers\LinguaStemRu;
+        foreach ($temp as $item) {
+            if (iconv_strlen($item) > 3) {
+                $words[] = $stemmer->stem_word($item);
+            } else {
+                $words[] = $item;
+            }
+        }
+        $relevance = "IF (`posts`.`name` LIKE '%" . $words[0] . "%', 2, 0)";
+        for ($i = 1; $i < count($words); $i++) {
+            $relevance .= " + IF (`posts`.`name` LIKE '%" . $words[$i] . "%', 2, 0)";
+        }
+        $query->select('posts.*', \DB::raw($relevance . ' as relevance'))
+            ->where('posts.name', 'like', '%' . $words[0] . '%');
+        for ($i = 1; $i < count($words); $i++) {
+            $query = $query->orWhere('posts.name', 'like', '%' . $words[$i] . '%');
+        }
+        $query->orderBy('relevance', 'desc');
+        return $query;
+    }
 
 
 }

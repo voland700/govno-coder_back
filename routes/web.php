@@ -15,15 +15,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [\App\Http\Controllers\Front\PostController::class, 'index'])->name('index');
 
-Route::get('/news', [\App\Http\Controllers\Front\NewsController::class, 'list'])->name('news');
-Route::get('/new/{slug}', [\App\Http\Controllers\Front\NewsController::class, 'item'])->name('new');
+Route::get('/news-list', [\App\Http\Controllers\Front\NewsController::class, 'list'])->name('news');
+Route::get('/news-item/{slug}', [\App\Http\Controllers\Front\NewsController::class, 'item'])->name('new');
 
 
-Route::get('/posts/{slug}', [\App\Http\Controllers\Front\PostController::class, 'list'])->name('posts');
-Route::get('/post/{slug}', [\App\Http\Controllers\Front\PostController::class, 'item'])->name('post');
+Route::get('/post-list/{slug}', [\App\Http\Controllers\Front\PostController::class, 'list'])->name('posts');
+Route::get('/post-item/{slug}', [\App\Http\Controllers\Front\PostController::class, 'item'])->name('post');
+Route::get('/search', [\App\Http\Controllers\Front\PostController::class, 'search'])->name('search');
 
-Route::get('/tags', [\App\Http\Controllers\Front\TagController::class, 'list'])->name('tags');
-Route::get('/tag/{slug}', [\App\Http\Controllers\Front\TagController::class, 'tags'])->name('tag');
+
+Route::get('/tags-list', [\App\Http\Controllers\Front\TagController::class, 'list'])->name('tags');
+Route::get('/tags-item/{slug}', [\App\Http\Controllers\Front\TagController::class, 'tags'])->name('tag');
 
 
 

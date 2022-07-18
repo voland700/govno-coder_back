@@ -2,8 +2,8 @@
     <div class="container">
         <div class="footer_wrap">
             <div class="footer_item">
-                <form action="#" method="GET" class="footer_serch_form">
-                    <input type="text" name="s" class="footer_serch_inp">
+                <form action="{{route('search')}}" method="GET" class="footer_serch_form">
+                    <input type="text" name="s" class="footer_serch_inp @error('s') is-invalid @enderror" required>
                     <input type="submit" class="footer_serch_btn">
                 </form>
             </div>

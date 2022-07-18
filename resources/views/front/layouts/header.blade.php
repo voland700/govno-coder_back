@@ -23,8 +23,8 @@
 		<div class="top-search-wrap">
 			<div class="top-search-btn-closed" id="searchClosed">×</div>
 			<div class="top-search-inner">
-				<form action="#" name="s" class="top-search-form">
-					<input type="text" name="serch" class="top-search-input" placeholder="Поиск...">
+				<form action="{{route('search')}}" method="get" class="top-search-form">
+					<input type="text" name="s" class="top-search-input @error('s') is-invalid @enderror" required placeholder="Поиск...">
 					<input type="submit" class="top-search-btn-sub" value="Искать">
 				</form>
 			</div>
@@ -51,10 +51,8 @@
 				</div>
 					<nav class="menu" id="menu">
 						<ul class="menu_list">
-							<li class="menu_item">
-								<a href="{{route('news')}}" class="menu_link">Новости</a>
-							</li>
-							<li class="menu_item __active">
+
+							<li class="menu_item {{ request()->is('post-*') ? 'active' : null }}">
 								<a href="{{route('index')}}" class="menu_link many">Статьи</a>
                                 @if($categories)
 								<ul class="submenu_list">
@@ -66,7 +64,10 @@
 								</ul>
                                 @endif
 							</li>
-							<li class="menu_item">
+                            <li class="menu_item {{ request()->is('news-*') ? 'active' : null }}">
+                                <a href="{{route('news')}}" class="menu_link">Новости</a>
+                            </li>
+							<li class="menu_item {{ request()->is('tags-*') ? 'active' : null }}">
 								<a href="{{route('tags')}}" class="menu_link">Теги</a>
 							</li>
 						</ul>

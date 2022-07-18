@@ -49,6 +49,20 @@ class PostController extends Controller
         //$comments = Comment::where('post_id', $post->id)->get()->toTree()->paginate(10);
     }
 
+    public function search(Request $request)
+    {
+        $s = $request->s;
+        $request->validate([
+            's' => 'required',
+        ]);
+
+        $posts = Post::like($request->s)->with('categories:id,name,slug')->where('active', 1)->paginate(12);
+        $category = collect([]);
+        $category->name =  'Поиск по запросу: '.$s;
+        $category->subtitle = null;
+        return view('front.post.posts', compact('category', 'posts'));
+    }
+
 
 
 
