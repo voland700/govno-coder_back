@@ -113,4 +113,11 @@
     display: inline-block;
     width: 3rem;
 }
+.one-line{
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 5px;
+}
+
 

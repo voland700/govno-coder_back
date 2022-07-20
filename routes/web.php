@@ -87,6 +87,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'isadmin']], functio
     Route::delete('/comments-destroy/{id}', [\App\Http\Controllers\Admin\CommentController::class, 'destroy'])->name('comment.destroy');
     Route::post('/comments-update/{id}', [\App\Http\Controllers\Admin\CommentController::class, 'update'])->name('comment.update');
 
+    Route::resource('/news', \App\Http\Controllers\Admin\NewsController::class);
+
 
 
 
@@ -98,10 +100,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'isadmin']], functio
     Route::post('/remove-img', [App\Http\Controllers\Admin\PostController::class, 'removeImg'])->name('remove.img');
     Route::post('/update-img', [App\Http\Controllers\Admin\PostController::class, 'updateImg'])->name('update.img');
 
+    Route::post('/remove-new-img', [App\Http\Controllers\Admin\NewsController::class, 'removeImg'])->name('remove.new.img');
+    Route::post('/update-new-img', [App\Http\Controllers\Admin\NewsController::class, 'updateImg'])->name('update.new.img');
+
+
     Route::get('/parser', [App\Http\Controllers\News\NewsController::class, 'getNews'])->name('parser');
     Route::get('/pars-links', [App\Http\Controllers\News\NewsController::class, 'parsingListLinks'])->name('pars.links');
 
-    Route::get('/test', [\App\Http\Controllers\Admin\PostController::class, 'test'])->name('admin.test');
+    Route::get('/sitemap', [\App\Http\Controllers\Admin\SitemapController::class, 'createSitemap'])->name('sitemap');
+
 
 
 

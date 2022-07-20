@@ -25,8 +25,12 @@
             @method('PUT')
 
         <x-adminlte-card title="Данные тега" class="col-lg-6" body-class="pb-3" collapsible removable maximizable>
-
-            <x-adminlte-input-switch name="active" data-on-color="success" data-off-color="danger" {{($tag->active == 1) ? 'checked' : ''}}/>
+            @php
+                $configSwitch = [
+                    'state' => $tag->active == 1 ? true : false
+                ];
+            @endphp
+            <x-adminlte-input-switch name="active" data-on-color="success" data-off-color="danger" :config="$configSwitch" />
             <div class="row">
 
                 <x-adminlte-input name="name" label="Название тега" value="{{$tag->name}}" fgroup-class="col-12" enable-old-support>

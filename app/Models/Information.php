@@ -17,7 +17,6 @@ class Information extends Model
         'active',
         'preview',
         'description',
-        'title',
         'image',
         'link'
     ];

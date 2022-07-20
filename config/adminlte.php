@@ -189,7 +189,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => '/admin/',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -249,6 +249,11 @@ return [
             'can'  => 'manage-blog',
         ],
         [
+            'text'        => 'Статьи',
+            'route'       => 'post.index',
+            'icon'        => 'far fa-fw fa-file'
+        ],
+        [
             'text'        => 'Рубрики',
             'route'       => 'category.index',
             'icon'        => 'fas fa-fw fa-list-ul'
@@ -259,20 +264,21 @@ return [
             'icon'        => 'fas fa-fw fa-tags'
         ],
         [
-            'text'        => 'Статьи',
-            'route'       => 'post.index',
-            'icon'        => 'far fa-fw fa-file'
-        ],
-        [
             'text'        => 'Коментарии',
             'route'       => 'admin.comments',
             'icon'        => 'fas fa-fw fa-comments'
+        ],
+        [
+            'text'        => 'Новости',
+            'route'       => 'news.index',
+            'icon'        => 'far fa-fw fa-newspaper'
         ],
         [
             'text'        => 'Пользователи',
             'route'       => 'admin.users',
             'icon'        => 'fas fa-fw fa-user'
         ],
+
         // -- Удалить данные пункты меню
     ],
 

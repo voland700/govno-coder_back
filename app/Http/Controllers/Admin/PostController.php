@@ -195,29 +195,11 @@ class PostController extends Controller
     public function test()
     {
         $post = Post::find(14);
-
-
-
-
         dd($post->getMedia('main')->isNotEmpty());
-
        //dd($post->getFirstMedia('main')->getUrl('full'));
         //dd($post->getFirstMedia('main')->hasGeneratedConversion('full'));
-
-
         //dd( array_key_exists(0, $post->getMedia('main')->toArray() ));
 
-
-
     }
-
-
-
-
-
-
-
-
-
 
 }
