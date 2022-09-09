@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Helpers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Spatie\Sitemap\Sitemap;
@@ -11,23 +10,12 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\Information;
 
-
-use App\Http\Helpers\SiteMapFile;
-
-
-
-class SitemapController extends Controller
+class SiteMapFile
 {
-    public function createSitemap()
-    {
-        $siteMapFile = SiteMapFile::create();
-        if($siteMapFile) {
-            return $siteMapFile;
-        } else {
-            return  'Ошибка соддания айла sitemap.xml';
-        }
+    public static $file = [];
 
-        /*
+    public static function create(){
+
         $path = public_path() . '/sitemap.xml';
         $res = Sitemap::create();
 
@@ -71,8 +59,9 @@ class SitemapController extends Controller
             );
         }
 
-        $res->writeToFile($path);
-        return $res;
-        */
+        //$res->writeToFile($path);
+        self::$file = $res;
+        return self::$file;
     }
+
 }

@@ -110,7 +110,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'isadmin']], functio
     Route::get('/sitemap', [\App\Http\Controllers\Admin\SitemapController::class, 'createSitemap'])->name('sitemap');
 
 
-
-
-
 });
+
+Route::get('/test', [App\Http\Controllers\News\NewsController::class, 'test']);
