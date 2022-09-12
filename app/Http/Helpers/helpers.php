@@ -12,6 +12,8 @@ if (! function_exists('removeLink')) {
         preg_match_all($regex,$str,$result);
         foreach($result[0] as $rs)
         {
+            //https://ru.stackoverflow.com/questions/1036085/Регулярное-выражение-для-поиска-data-атрибутов
+            //preg_match_all('~data[^"]+"\K[^"]+~', $rs, $rs);
             $regex = '/<a (.*)>(.*)<\/a>/isU';
             $text = preg_replace($regex,'$2',$rs);
             $str = str_replace($rs,$text,$str);
